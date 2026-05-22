@@ -1,0 +1,21 @@
+---
+description: Agentic engineering workflow for AI-assisted app building.
+globs:
+  - "**/*"
+alwaysApply: true
+---
+
+# Agentic Engineering
+
+Use an engineering loop for non-trivial changes:
+
+1. Clarify the goal.
+2. Inspect the existing project.
+3. Plan the smallest useful change.
+4. Implement narrowly.
+5. Verify with tests, checks, or a manual acceptance path.
+6. Review the diff before finishing.
+
+Protect secrets. Never print `.env` values, auth tokens, API keys, cookies, private keys, or private registry config.
+
+For package installs and updates, prefer package managers with a 7-day release-age delay. npm must be `11.10.0` or newer before using `min-release-age`.

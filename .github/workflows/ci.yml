@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install ripgrep
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ripgrep
+
+      - name: Check shell syntax
+        run: |
+          bash -n scripts/*.sh
+          sh -n hooks/*.sh
+
+      - name: Verify pack structure
+        run: ./scripts/verify-pack.sh
+
+      - name: Scan for credential-like values
+        run: ./scripts/secret-scan.sh .
+
+      - name: Run safety fixtures
+        run: ./scripts/test-fixtures.sh
