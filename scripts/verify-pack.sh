@@ -23,7 +23,8 @@ for path in \
   "$root/templates/package-age/yarnrc.yml" \
   "$root/templates/package-age/uv.toml" \
   "$root/templates/package-age/pip.conf" \
-  "$root/templates/package-age/mise-config.toml"; do
+  "$root/templates/package-age/mise-config.toml" \
+  "$root/scripts/package-age-lib.sh"; do
   if [ ! -s "$path" ]; then
     printf '%s\n' "verify pack: missing $path"
     exit 1

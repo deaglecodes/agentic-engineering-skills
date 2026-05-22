@@ -6,7 +6,9 @@ Security fixes are accepted for the current main branch. Tagged releases should 
 
 ## Reporting A Vulnerability
 
-Please report security issues privately before opening a public issue. If no private channel is listed on the GitHub repository, open a minimal public issue that says a security report is available without sharing exploit details or credential values.
+Please report security issues privately before opening a public issue. Use GitHub private vulnerability reporting when it is enabled for this repository.
+
+If private reporting is unavailable, open a minimal public issue that says a security report is available. Do not include exploit details, credential values, private config, cookies, keys, or `.env` contents in the public issue.
 
 Useful reports include:
 

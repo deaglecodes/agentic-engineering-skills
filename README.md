@@ -14,7 +14,20 @@ The project is inspired by Andrej Karpathy's "agentic engineering" framing, but 
 - `scripts/`: safe setup and check scripts that avoid printing secrets.
 - `hooks/`: optional hook examples for review gates.
 
-## Quick Use
+## Install In An Agent
+
+Use one adapter per project:
+
+```sh
+cp adapters/codex/AGENTS.md /path/to/project/AGENTS.md
+cp adapters/claude/CLAUDE.md /path/to/project/CLAUDE.md
+mkdir -p /path/to/project/.cursor/rules
+cp adapters/cursor/.cursor/rules/agentic-engineering.mdc /path/to/project/.cursor/rules/
+```
+
+Install only the skill folders your agent supports. The `skills/` folder is the source of truth; adapters are short reminders.
+
+## Package Safety
 
 Run checks without changing anything:
 
@@ -35,6 +48,18 @@ Apply user-wide package safety:
 ```
 
 Important: setup changes package-manager config files in your home directory. It creates private backups first by default. Use `--dry-run` to preview, or `--no-backup` if you do not want backup copies of existing config files.
+
+## Demo
+
+Loose prompt:
+
+> build my app idea and make it work
+
+Agentic prompt:
+
+> Inspect the repo first. Clarify anything that changes the outcome. Make the smallest useful version, verify it, review the diff for secrets or risky package installs, then summarize what changed in plain English.
+
+See [docs/demo.md](docs/demo.md) for a before/after workflow.
 
 ## Hook Usage
 
@@ -58,15 +83,7 @@ Use `verify-before-finish.sh` before publishing or handing off changes. Use `blo
 
 ## Package Age Defaults
 
-The default policy is 7 days:
-
-- npm: `min-release-age=7`
-- pnpm: `minimumReleaseAge: 10080`
-- Bun: `minimumReleaseAge = 604800`
-- Yarn: `npmMinimalAgeGate: 7d`
-- uv: `exclude-newer = "P7D"`
-- pip: `uploaded-prior-to = P7D`
-- mise: `minimum_release_age = "7d"`
+The default policy is 7 days: npm `min-release-age=7`, pnpm `minimumReleaseAge: 10080`, Bun `minimumReleaseAge = 604800`, Yarn `npmMinimalAgeGate: 7d`, uv `exclude-newer = "P7D"`, pip `uploaded-prior-to = P7D`, and mise `minimum_release_age = "7d"`.
 
 ## Known Limitations
 

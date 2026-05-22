@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+SCRIPT_DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
+. "$SCRIPT_DIR/package-age-lib.sh"
+
 DRY_RUN=0
 NO_BACKUP=0
 for arg in "$@"; do
@@ -45,24 +48,6 @@ backup_file() {
     chmod 600 "$backup_root/$backup_name" 2>/dev/null || true
     find "$HOME/.cache/agentic-engineering/backups" -mindepth 1 -maxdepth 1 -type d -mtime +14 -exec rm -rf {} + 2>/dev/null || true
   fi
-}
-
-version_ge() {
-  local have="$1"
-  local need="$2"
-  awk -v have="$have" -v need="$need" '
-    BEGIN {
-      split(have, h, ".")
-      split(need, n, ".")
-      for (i = 1; i <= 3; i++) {
-        hv = h[i] + 0
-        nv = n[i] + 0
-        if (hv > nv) exit 0
-        if (hv < nv) exit 1
-      }
-      exit 0
-    }
-  '
 }
 
 upsert_line() {
@@ -169,16 +154,10 @@ upsert_top_level_toml() {
   mv "$tmp" "$path"
 }
 
-MISE_BIN="${MISE_BIN:-}"
+MISE_BIN="$(package_find_mise_bin 2>/dev/null || true)"
 if [[ -z "$MISE_BIN" ]]; then
-  if command -v mise >/dev/null 2>&1; then
-    MISE_BIN="$(command -v mise)"
-  elif [[ -x "$HOME/.local/bin/mise" ]]; then
-    MISE_BIN="$HOME/.local/bin/mise"
-  else
-    log "mise not found. Install mise first, then rerun this script."
-    exit 1
-  fi
+  log "mise not found. Install mise first, then rerun this script."
+  exit 1
 fi
 
 log "Setting mise 7-day tool delay"
@@ -197,7 +176,7 @@ if [[ -z "$npm_version" ]]; then
   log "npm not found after mise setup"
   exit 1
 fi
-if ! version_ge "$npm_version" "11.10.0"; then
+if ! package_version_ge "$npm_version" "11.10.0"; then
   log "stop: npm $npm_version is older than 11.10.0 and may ignore min-release-age"
   log "update npm through mise or Node before setting npm package-age safety"
   exit 1

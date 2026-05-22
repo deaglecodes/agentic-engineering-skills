@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+- Added issue templates for bugs, features, and safety reports.
+- Added a before/after demo.
+- Simplified package-age logic by sharing common shell helpers.
+- Clarified README quickstart and security reporting guidance.
+
 ## 0.1.0 - 2026-05-22
 
 - Added canonical Agentic Engineering skills.
