@@ -37,6 +37,10 @@ package_find_mise_bin() {
 package_tool_output() {
   tool="$1"
   shift
+  if [ -n "${MISE_BIN:-}" ]; then
+    "$MISE_BIN" exec -- "$tool" "$@" 2>/dev/null || true
+    return 0
+  fi
   if command -v "$tool" >/dev/null 2>&1; then
     "$tool" "$@" 2>/dev/null || true
     return 0
