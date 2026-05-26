@@ -1,6 +1,6 @@
 # Demo
 
-This project changes the shape of an AI coding request.
+This project changes the shape of an AI coding request from "make it work" to "prove it works."
 
 ## Before
 
@@ -38,7 +38,23 @@ Expected result:
 Before an agent runs a package install:
 
 ```sh
-./hooks/block-risky-package-install.sh npm
+./hooks/block-risky-package-install.sh npm .
 ```
 
 If npm is too old or the 7-day delay is missing, the hook blocks the install and explains what to fix.
+
+## Release Example
+
+Prompt:
+
+```text
+Audit this repo for public release. Compare the docs to the actual files, run validation, do a temp-directory smoke test, and tell me whether it is ready to promote.
+```
+
+Expected result:
+
+- The agent inventories the repo before editing.
+- It identifies release blockers.
+- It fixes docs, scripts, hooks, and tests within scope.
+- It runs `./scripts/validate-repo.sh`.
+- It reports smoke-test results and caveats without overclaiming.

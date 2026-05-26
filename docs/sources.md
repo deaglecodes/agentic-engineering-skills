@@ -7,6 +7,12 @@ This project is based on the idea that AI coding should move from loose promptin
 - Andrej Karpathy, Sequoia Ascent 2026 summary: https://karpathy.bearblog.dev/sequoia-ascent-2026/
 - multica-ai Andrej Karpathy skills repo: https://github.com/multica-ai/andrej-karpathy-skills
 
+## Agent Docs
+
+- Claude Code overview: https://docs.anthropic.com/en/docs/claude-code/overview
+- Claude Code settings: https://docs.anthropic.com/en/docs/claude-code/settings
+- Claude Code hooks reference: https://docs.anthropic.com/en/docs/claude-code/hooks
+
 ## Package Age Sources
 
 - npm `min-release-age`: https://docs.npmjs.com/cli/v11/using-npm/config

@@ -1,5 +1,5 @@
 ---
-description: Agentic engineering workflow for AI-assisted app building.
+description: Spec-driven, verified, security-aware agentic engineering workflow for AI-assisted software work.
 globs:
   - "**/*"
 alwaysApply: true
@@ -7,15 +7,24 @@ alwaysApply: true
 
 # Agentic Engineering
 
-Use an engineering loop for non-trivial changes:
+Use an engineering loop for non-trivial changes.
 
 1. Clarify the goal.
 2. Inspect the existing project.
-3. Plan the smallest useful change.
+3. Plan the smallest useful change with success criteria.
 4. Implement narrowly.
 5. Verify with tests, checks, or a manual acceptance path.
 6. Review the diff before finishing.
+7. Summarize changes, checks, and remaining risk.
 
-Protect secrets. Never print `.env` values, auth tokens, API keys, cookies, private keys, or private registry config.
+Protect secrets. Never print environment files, credentials, cookies, private keys, or private registry config values.
 
-For package installs and updates, prefer package managers with a 7-day release-age delay. npm must be `11.10.0` or newer before using `min-release-age`.
+For package installs and updates, prefer package managers with a 7-day release-age delay. npm must be `11.10.0` or newer before relying on `min-release-age`.
+
+Prefer project-local setup:
+
+```sh
+./scripts/setup-package-age-safety.sh --mode=project-local --target .
+```
+
+Use user-wide config only with explicit user confirmation, dry run, backups, and restore instructions.

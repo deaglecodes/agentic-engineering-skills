@@ -16,21 +16,10 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Install ripgrep
+      - name: Install validation tools
         run: |
           sudo apt-get update
-          sudo apt-get install -y ripgrep
+          sudo apt-get install -y jq ripgrep
 
-      - name: Check shell syntax
-        run: |
-          bash -n scripts/*.sh
-          sh -n hooks/*.sh
-
-      - name: Verify pack structure
-        run: ./scripts/verify-pack.sh
-
-      - name: Scan for credential-like values
-        run: ./scripts/secret-scan.sh .
-
-      - name: Run safety fixtures
-        run: ./scripts/test-fixtures.sh
+      - name: Validate repository
+        run: ./scripts/validate-repo.sh

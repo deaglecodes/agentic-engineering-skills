@@ -1,36 +1,76 @@
 # Installation Notes
 
+Use one adapter per target project. Copy skills only when the agent supports reusable skill folders.
+
 ## Codex
 
-Copy or link `adapters/codex/AGENTS.md` into a project root, then copy any wanted skill folders from `skills/` into your Codex skills directory.
+```sh
+cp adapters/codex/AGENTS.md /path/to/project/AGENTS.md
+```
+
+Smoke test:
+
+```text
+Use the Agentic Engineering workflow. Inspect this repo, propose a tiny safe docs improvement, make it, verify it, review the diff, and summarize checks.
+```
+
+Uninstall by removing the copied `AGENTS.md` or merging out the Agentic Engineering section.
 
 ## Claude Code
 
-Copy or link `adapters/claude/CLAUDE.md` into a project root. If your Claude setup supports Agent Skills, install the matching folders from `skills/`.
+```sh
+cp adapters/claude/CLAUDE.md /path/to/project/CLAUDE.md
+```
+
+For plugin-style packaging, use `.claude-plugin/plugin.json` with the packaged skills. Hook examples are separate because Claude Code hooks are configured through settings files.
 
 ## Cursor
 
-Copy or link `adapters/cursor/.cursor/rules/agentic-engineering.mdc` into the target project.
+```sh
+mkdir -p /path/to/project/.cursor/rules
+cp adapters/cursor/.cursor/rules/agentic-engineering.mdc /path/to/project/.cursor/rules/
+```
+
+Uninstall by deleting `.cursor/rules/agentic-engineering.mdc`.
+
+## Generic Agents
+
+```sh
+cp adapters/generic/AGENTIC_ENGINEERING.md /path/to/project/AGENTIC_ENGINEERING.md
+```
+
+Paste or link that file into the agent's instruction mechanism.
 
 ## Package Safety
 
-Warning: setup changes user-wide package-manager config in your home directory. Run the dry run first if you are unsure.
-
-Run:
+Read-only audit:
 
 ```sh
-./scripts/setup-package-age-safety.sh --dry-run
-./scripts/setup-package-age-safety.sh
-./scripts/check-package-age-safety.sh
+./scripts/check-package-age-safety.sh --scope=all
 ```
 
-The scripts write only public-safe settings and do not print secret values. Existing files are backed up under `~/.cache/agentic-engineering/backups` with private permissions before edits; use `--no-backup` if you prefer not to duplicate config files.
+Project-local setup:
+
+```sh
+./scripts/setup-package-age-safety.sh --mode=project-local --target /path/to/project
+```
+
+Project-local setup does not create backup copies of existing package-manager files, because those files can contain private registry tokens. For pip, use the generated template through `PIP_CONFIG_FILE=.agentic-engineering/package-safety/pip.conf`, set `PIP_UPLOADED_PRIOR_TO=P7D`, or rely on user/site pip config.
+
+User-wide setup is opt-in:
+
+```sh
+./scripts/setup-package-age-safety.sh --mode=user-wide --dry-run
+./scripts/setup-package-age-safety.sh --mode=user-wide --confirm-user-wide
+```
+
+If user-wide setup creates backups, the script prints a restore command. Do not paste private package-manager config contents into issues or pull requests.
 
 ## Hooks
 
-Optional hooks live in `hooks/`:
+Optional hooks live in `hooks/` and `hooks/claude/`. Run them manually or wire them into an agent hook system:
 
-- `verify-before-finish.sh`: checks whitespace and scans changed/public files for credential-like patterns.
-- `block-risky-package-install.sh`: blocks package commands unless their 7-day release-age gate is active, or blocks unsupported managers that do not provide one.
-
-Run hooks manually, or wire them into the hook system for your coding agent.
+```sh
+./hooks/verify-before-finish.sh
+./hooks/block-risky-package-install.sh npm /path/to/project
+```
