@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Nothing yet.
+
+## 0.2.0 - 2026-05-26
+
 - Hardened the repo for a v0.2 release pass.
 - Rewrote the README around adoption, safety model, install modes, evals, hooks, and honest comparison with the Karpathy-inspired reference repo.
 - Added first-class Codex, Claude Code, Cursor, and generic agent docs.
