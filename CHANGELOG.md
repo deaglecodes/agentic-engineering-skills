@@ -2,7 +2,9 @@
 
 ## Unreleased
 
-- Nothing yet.
+- Simplified the README so the project purpose, quickstart, package safety, hooks, and checks are easier to understand.
+- Added a clearer README USP section explaining the practical jump from loose AI coding to verified agentic engineering.
+- Removed the old v0.2 audit note from public docs because it was internal release history, not user-facing guidance.
 
 ## 0.2.0 - 2026-05-26
 

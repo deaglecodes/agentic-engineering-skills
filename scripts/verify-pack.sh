@@ -26,7 +26,6 @@ for path in \
   "$root/docs/claude.md" \
   "$root/docs/cursor.md" \
   "$root/docs/generic.md" \
-  "$root/docs/audit-v0.2.md" \
   "$root/docs/architecture.md" \
   "$root/docs/release-checklist.md" \
   "$root/docs/troubleshooting.md" \

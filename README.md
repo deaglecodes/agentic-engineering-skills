@@ -1,31 +1,52 @@
 # Agentic Engineering Skills
 
-Agentic Engineering Skills is a cross-agent workflow pack that helps AI coding agents move from loose vibe coding to spec-driven, verified, security-aware engineering.
+Agentic Engineering Skills is a small workflow pack for people who build software with AI agents.
+
+It helps an agent slow down just enough to inspect the project, make a narrow plan, protect secrets, use safer package installs, verify the work, and explain what changed in plain English.
 
 Current release: `0.2.0`.
 
-## Problem
+## The Gamechanger
 
-AI coding agents are useful, but they often make hidden assumptions, overbuild, touch unrelated files, install fresh dependencies without supply-chain guardrails, and finish without proof. This pack gives agents a compact operating loop and local checks so their work is easier to trust.
+Most AI coding tools make the agent faster. This pack makes the agent more trustworthy.
 
-## What This Is
+Instead of hoping a long prompt is followed, Agentic Engineering Skills turns good engineering behavior into reusable instructions, optional hooks, and local checks that travel with your project. The result is a practical upgrade from "the AI wrote code" to "the AI inspected the repo, protected secrets, avoided risky fresh packages, kept the change small, proved it works, and showed the evidence."
 
-- Reusable skills for planning, verification, debugging, diff review, dependency safety, repo audit, and release readiness.
-- Adapters for Codex, Claude Code, Cursor, and generic instruction-file agents.
-- Optional Claude Code hook examples for package-install gating and pre-finish verification.
-- Local scripts for package-age setup, validation, secret-like string scanning, and smoke checks.
-- Evals and demos that describe expected agent behavior.
+For non-technical builders, that is the unlock: you can keep the speed and creativity of AI-assisted building while adding the habits a senior engineer would normally bring to the work.
+
+## What You Get
+
+- Agent instructions for Codex, Claude Code, Cursor, and generic coding agents.
+- Reusable skills for planning, debugging, verification, security boundaries, dependency safety, diff review, repo audit, and release readiness.
+- Optional Claude Code hooks that can block risky package installs and ask for verification before finishing.
+- Local scripts for 7-day package release-age checks, repo validation, fixture tests, eval smoke tests, and secret-like string scanning.
+
+## Why This Exists
+
+Loose "vibe coding" can work for quick prototypes, but agents often:
+
+- guess before reading the code,
+- edit more than they need to,
+- install brand-new package versions,
+- miss hidden security risks,
+- finish without proof.
+
+This repo gives the agent a simple engineering loop:
+
+```text
+inspect -> plan -> change narrowly -> verify -> review diff -> summarize
+```
 
 ## What This Is Not
 
 - Not an official OpenAI, Anthropic, Cursor, or Karpathy project.
-- Not a sandbox, vulnerability scanner, or substitute for human code review.
-- Not a promise that every package manager can enforce release-age delays.
-- Not a tool that should mutate global user config by default.
+- Not a sandbox or full vulnerability scanner.
+- Not a replacement for human review.
+- Not something that should silently change your global machine settings.
 
 ## Quickstart
 
-Clone and validate:
+Clone the repo and check that the pack is healthy:
 
 ```sh
 git clone https://github.com/deaglecodes/agentic-engineering-skills.git
@@ -33,7 +54,7 @@ cd agentic-engineering-skills
 ./scripts/validate-repo.sh
 ```
 
-Install one adapter per target project:
+Copy one adapter into each project where you want the workflow:
 
 ```sh
 # Codex
@@ -50,61 +71,38 @@ cp adapters/cursor/.cursor/rules/agentic-engineering.mdc /path/to/project/.curso
 cp adapters/generic/AGENTIC_ENGINEERING.md /path/to/project/AGENTIC_ENGINEERING.md
 ```
 
-Project-local package safety:
+Then try a prompt like:
+
+```text
+Use the Agentic Engineering workflow. Inspect this repo first, make the smallest useful change, verify it, review the diff, and explain the result plainly.
+```
+
+## Package Safety
+
+The package-safety scripts help protect AI agents from installing a package version that was published too recently. The default policy is a 7-day delay where the package manager supports it.
+
+Check a project without changing anything:
 
 ```sh
-./scripts/check-package-age-safety.sh --scope=project --target /path/to/project
+./scripts/check-package-age-safety.sh --scope=all --target /path/to/project
+```
+
+Add project-local safety files:
+
+```sh
 ./scripts/setup-package-age-safety.sh --mode=project-local --target /path/to/project
 ```
 
-Project-local setup writes only files inside the target project and does not make backup copies of existing package-manager config, so it will not duplicate private registry tokens. Review the resulting diff before committing. For pip, project-local setup writes a template only; use `PIP_CONFIG_FILE=.agentic-engineering/package-safety/pip.conf`, `PIP_UPLOADED_PRIOR_TO=P7D`, or user/site pip config for actual pip installs.
+Project-local setup writes only inside the target project and does not copy existing package-manager config, because those files can contain private registry tokens.
 
-User-wide package safety is explicit:
+User-wide setup exists, but it is explicit:
 
 ```sh
 ./scripts/setup-package-age-safety.sh --mode=user-wide --dry-run
 ./scripts/setup-package-age-safety.sh --mode=user-wide --confirm-user-wide
 ```
 
-## Install Modes
-
-| Mode | Best for | What changes |
-| --- | --- | --- |
-| Adapter copy | One project | Adds one instruction file to the target repo. |
-| Skill copy | Agents with reusable skill support | Copies selected `skills/*` folders into the agent's skill directory. |
-| Claude plugin-style package | Claude Code plugin workflows | Uses `.claude-plugin/plugin.json` and the packaged `skills/`. Hooks remain optional examples. |
-| Hooks | Claude Code users who want local guardrails | Adds settings entries that call scripts under `hooks/claude/`. |
-| Package-safety templates | Repos that allow shared config | Adds project-local package-manager config files. |
-
-## Agent Guides
-
-- Codex: [docs/codex.md](docs/codex.md)
-- Claude Code: [docs/claude.md](docs/claude.md)
-- Cursor: [docs/cursor.md](docs/cursor.md)
-- Generic agents: [docs/generic.md](docs/generic.md)
-
-## Safety Model
-
-The default safety posture is local and reversible:
-
-- Inspect before editing.
-- Ask only outcome-changing questions.
-- Keep diffs narrow.
-- Do not print secrets or private config values.
-- Prefer project-local config over user-wide config.
-- Use dry runs and backups before user-wide changes.
-- Verify before handoff.
-- Review the diff before final claims.
-
-Run the full local gate:
-
-```sh
-./scripts/validate-repo.sh
-```
-
-## Package-Age Safety
-
-The package-safety policy is a 7-day release-age delay where supported:
+Supported settings:
 
 | Tool | Setting | 7-day value |
 | --- | --- | --- |
@@ -113,75 +111,69 @@ The package-safety policy is a 7-day release-age delay where supported:
 | Bun | `minimumReleaseAge` | `604800` seconds |
 | Yarn | `npmMinimalAgeGate` | `7d` |
 | uv | `exclude-newer` | `P7D` |
-| pip | `uploaded-prior-to` | `P7D`, pip version support required |
+| pip | `uploaded-prior-to` | `P7D`, modern pip required |
 | mise | `minimum_release_age` | `7d` |
 
-For pip, the project-local file is not auto-read by pip. The gate is active only when pip is pointed at it with `PIP_CONFIG_FILE`, when `PIP_UPLOADED_PRIOR_TO=P7D` is set, or when user/site pip config contains the setting.
+Pip is special: a project-local `pip.conf` is only a template unless pip is pointed at it with `PIP_CONFIG_FILE`, `PIP_UPLOADED_PRIOR_TO=P7D`, or user/site pip config.
 
-Unsupported or weakly covered managers such as Cargo, Go modules, Composer, Homebrew, RubyGems, Bundler, and Mix should be treated as manual-review paths for agent-driven installs.
+Package managers without a native 7-day age gate in this pack, such as Cargo, Go modules, Composer, Homebrew, RubyGems, Bundler, and Mix, should be treated as manual-review paths for agent-driven installs.
 
-## Hooks
+## Optional Hooks
 
-Claude Code hook examples live under `hooks/claude/`:
+Claude Code hook examples live in `hooks/claude/`.
 
-- `pretooluse-package-install-safety.sh`: blocks package install commands without a project or user/runtime age gate.
-- `stop-verify-before-finish.sh`: blocks final stop when `hooks/verify-before-finish.sh` fails.
+- `pretooluse-package-install-safety.sh`: blocks package install commands when the 7-day gate is missing.
+- `stop-verify-before-finish.sh`: asks for verification before the agent stops.
 - `posttooluse-light-checks.sh`: reports whitespace issues after edits.
 - `sessionstart-reminder.sh`: adds a short workflow reminder.
 
+Generic hooks also exist:
+
+```sh
+./hooks/verify-before-finish.sh
+./hooks/block-risky-package-install.sh npm /path/to/project
+```
+
 See [docs/hooks.md](docs/hooks.md) and [docs/claude.md](docs/claude.md).
 
-## Skills
+## Docs
 
-The core skills are:
+- Install guide: [docs/install.md](docs/install.md)
+- Codex guide: [docs/codex.md](docs/codex.md)
+- Claude Code guide: [docs/claude.md](docs/claude.md)
+- Cursor guide: [docs/cursor.md](docs/cursor.md)
+- Generic agent guide: [docs/generic.md](docs/generic.md)
+- Package safety: [docs/package-age-safety.md](docs/package-age-safety.md)
+- Troubleshooting: [docs/troubleshooting.md](docs/troubleshooting.md)
+- Security policy: [SECURITY.md](SECURITY.md)
+- Sources: [docs/sources.md](docs/sources.md)
 
-- `ae-core-charter`
-- `ae-spec-and-plan`
-- `ae-verification-loop`
-- `ae-diff-review`
-- `ae-security-boundaries`
-- `ae-dependency-safety`
-- `ae-debug-loop`
-- `ae-test-first-fix`
-- `ae-repo-audit`
-- `ae-release-readiness`
+## Local Checks
 
-Each skill defines when to use it, workflow, do and don't rules, expected output, verification checklist, and failure modes.
+Run everything:
 
-## Evals And Demos
+```sh
+./scripts/validate-repo.sh
+```
 
-Behavior examples live in `docs/demo.md` and `evals/prompts/`. Run the eval smoke check:
+Run only the behavior smoke prompts:
 
 ```sh
 ./scripts/run-evals-smoke.sh
 ```
 
-The eval prompts cover ambiguity handling, bug fix workflow, dependency add safety, security-sensitive requests, scope control, diff review, final validation summary, and docs maintenance.
+Run the secret-like string scan:
 
-## Comparison With Karpathy Skills
+```sh
+./scripts/secret-scan.sh .
+```
 
-This project is directly inspired by the reference repo, but it has a different scope:
+The secret scan is intentionally simple. It is a last-minute public-release check, not a guarantee that every secret pattern is caught.
 
-| Area | Karpathy-inspired reference | Agentic Engineering Skills |
-| --- | --- | --- |
-| Main focus | A compact behavioral guide for Claude Code | A cross-agent workflow pack with adapters, hooks, scripts, evals, and release assets |
-| Agent support | Claude Code and Cursor | Codex, Claude Code, Cursor, and generic agents |
-| Package safety | Not the focus | 7-day package release-age policy, audit/setup scripts, and hook examples |
-| Verification | Behavioral principle | Local validation script, fixtures, eval smoke checks, and release checklist |
-| Complexity | Very small and easy to read | Broader and more operational, with more moving parts |
+## Design Tradeoff
 
-Honest tradeoff: the reference repo is simpler and easier to install. This repo is heavier because it tries to cover multiple agents, supply-chain safety, hooks, and public-release readiness.
+This project is inspired by small agent-skill repos, including Karpathy-style workflow notes, but it is more operational: it includes adapters, scripts, hooks, tests, and package-safety templates. That makes it heavier than a single instruction file, so the recommended install path is to copy only the adapter and optional pieces you actually need.
 
-## Roadmap
+## Contributing
 
-See [ROADMAP.md](ROADMAP.md).
-
-## Release And Troubleshooting
-
-- Architecture: [docs/architecture.md](docs/architecture.md)
-- Release checklist: [docs/release-checklist.md](docs/release-checklist.md)
-- Troubleshooting: [docs/troubleshooting.md](docs/troubleshooting.md)
-- Contributing: [CONTRIBUTING.md](CONTRIBUTING.md)
-- Contributors: [CONTRIBUTORS.md](CONTRIBUTORS.md)
-- Security: [SECURITY.md](SECURITY.md)
-- Sources: [docs/sources.md](docs/sources.md)
+See [CONTRIBUTING.md](CONTRIBUTING.md), [ROADMAP.md](ROADMAP.md), and [CHANGELOG.md](CHANGELOG.md).
