@@ -2,6 +2,8 @@
 
 Agentic Engineering Skills is a cross-agent workflow pack that helps AI coding agents move from loose vibe coding to spec-driven, verified, security-aware engineering.
 
+Current release: `0.2.0`.
+
 ## Problem
 
 AI coding agents are useful, but they often make hidden assumptions, overbuild, touch unrelated files, install fresh dependencies without supply-chain guardrails, and finish without proof. This pack gives agents a compact operating loop and local checks so their work is easier to trust.
@@ -180,5 +182,6 @@ See [ROADMAP.md](ROADMAP.md).
 - Release checklist: [docs/release-checklist.md](docs/release-checklist.md)
 - Troubleshooting: [docs/troubleshooting.md](docs/troubleshooting.md)
 - Contributing: [CONTRIBUTING.md](CONTRIBUTING.md)
+- Contributors: [CONTRIBUTORS.md](CONTRIBUTORS.md)
 - Security: [SECURITY.md](SECURITY.md)
 - Sources: [docs/sources.md](docs/sources.md)
