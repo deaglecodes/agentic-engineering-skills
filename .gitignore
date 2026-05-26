@@ -17,3 +17,5 @@ coverage/
 *.p12
 *.token
 *.agentic-engineering-backup-*
+.agentic-engineering/backups/
+.claude/settings.local.json

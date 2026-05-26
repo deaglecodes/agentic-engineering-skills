@@ -22,4 +22,5 @@ Useful reports include:
 - Do not submit real credentials, private registry config, cookies, keys, or `.env` contents.
 - Use placeholders such as `REDACTED_VALUE` in examples.
 - Run `./scripts/secret-scan.sh .` before opening pull requests.
-- Run `./scripts/test-fixtures.sh` after changing scripts or hooks.
+- Run `./scripts/validate-repo.sh` after changing scripts, hooks, adapters, or release docs.
+- Prefer project-local package-safety setup. User-wide setup must be explicit, use dry-run first, and keep private backups with restore instructions.

@@ -15,16 +15,14 @@ Thanks for helping improve Agentic Engineering Skills.
 Run before opening a pull request:
 
 ```sh
-./scripts/verify-pack.sh
-./scripts/secret-scan.sh .
-./scripts/test-fixtures.sh
+./scripts/validate-repo.sh
 ```
 
 If you edit shell scripts, also run:
 
 ```sh
 bash -n scripts/*.sh
-sh -n hooks/*.sh
+bash -n hooks/*.sh hooks/claude/*.sh
 ```
 
 ## Pull Request Notes
@@ -35,3 +33,7 @@ Include:
 - Why it changed.
 - Which checks passed.
 - Any remaining risk or limitation.
+
+## Release Changes
+
+Release-facing changes should update `CHANGELOG.md`, `ROADMAP.md` when relevant, and the docs under `docs/`. Do not publish plugin listings, tags, packages, or marketplace entries without maintainer approval.

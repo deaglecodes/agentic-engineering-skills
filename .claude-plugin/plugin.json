@@ -1,0 +1,30 @@
+{
+  "name": "agentic-engineering-skills",
+  "description": "Spec-driven, verified, security-aware workflow skills for Claude Code and other AI coding agents.",
+  "version": "0.2.0",
+  "author": {
+    "name": "deaglecodes"
+  },
+  "license": "MIT",
+  "keywords": [
+    "agentic-engineering",
+    "claude-code",
+    "codex",
+    "cursor",
+    "skills",
+    "security",
+    "verification"
+  ],
+  "skills": [
+    "./skills/ae-core-charter",
+    "./skills/ae-spec-and-plan",
+    "./skills/ae-verification-loop",
+    "./skills/ae-diff-review",
+    "./skills/ae-security-boundaries",
+    "./skills/ae-dependency-safety",
+    "./skills/ae-debug-loop",
+    "./skills/ae-test-first-fix",
+    "./skills/ae-repo-audit",
+    "./skills/ae-release-readiness"
+  ]
+}

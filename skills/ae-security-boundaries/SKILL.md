@@ -7,28 +7,47 @@ metadata:
 
 # Security Boundaries
 
-## Goal
+## When To Use
 
-Let agents help without crossing private, costly, or irreversible boundaries.
+Use this skill for secrets, authentication, package installs, permissions, deployment, publishing, payments, external services, browser profiles, production data, private notes, or local credential files.
 
 ## Workflow
 
 1. Identify the sensitive surface: secrets, auth, money, data, deployment, or accounts.
-2. Inspect filenames and schemas without printing secret values.
-3. Prefer dry runs, checks, and backups before mutation.
+2. Inspect filenames, schemas, and metadata without printing private values.
+3. Prefer read-only checks, dry runs, local setup, and backups before mutation.
 4. Ask for explicit approval before destructive or external side effects.
-5. Preserve existing config values unless the user asks to replace them.
+5. Preserve existing config values unless replacement is requested.
 6. Report only what changed and whether checks passed.
 
-## Never Print
+## Do
 
-- `.env` contents.
-- API keys, tokens, cookies, passwords, private keys, or auth headers.
-- Private vault notes unless directly required by the user's request.
-- Full config files that may contain registry tokens.
+- Use placeholders such as `REDACTED_VALUE` in examples.
+- Keep backups private when touching user-wide config.
+- Favor project-local config over user-wide config.
+- Use lockfiles, package-age gates, hashes, and manual review for supply-chain work.
 
-## Safer Defaults
+## Don't
 
-- Use user-local tools before system-wide installs.
-- Use lockfiles and package-age gates where available.
-- Prefer read-only inspection when the risk is unclear.
+- Do not print environment files, credentials, cookies, private keys, private registry config, or authorization headers.
+- Do not open private notes or personal files unless directly required.
+- Do not run destructive commands without approval.
+- Do not publish or deploy as a side effect of a local task.
+
+## Expected Output
+
+State the sensitive area, the safer path chosen, the checks run, and any approval still required.
+
+## Verification Checklist
+
+- No private value was printed or copied into public files.
+- Config mutation used project-local mode, dry run, or backup where possible.
+- Unsupported package managers were handled as manual-review paths.
+- External side effects were avoided or explicitly approved.
+
+## Failure Modes
+
+- The task requires a secret value that the agent should not see.
+- The action would mutate external state without approval.
+- Available tooling cannot verify the safety claim.
+- Existing config may contain private values and cannot be safely displayed.

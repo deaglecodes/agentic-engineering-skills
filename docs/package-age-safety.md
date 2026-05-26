@@ -1,6 +1,35 @@
 # 7-Day Package Safety
 
-Package managers usually install the newest matching package. If a bad actor hijacks a popular package and publishes a malicious version, the freshest version is often the risky one. A 7-day delay gives the community time to find and remove bad releases before an AI agent installs them.
+Package managers often install the newest matching package. If a popular package is hijacked, the newest version can be the riskiest one. A 7-day delay gives maintainers and the community time to detect and remove bad releases before an AI agent installs them.
+
+## Modes
+
+Read-only audit:
+
+```sh
+./scripts/check-package-age-safety.sh --scope=all
+```
+
+Project-local setup:
+
+```sh
+./scripts/setup-package-age-safety.sh --mode=project-local --target .
+```
+
+Project-local setup writes only files inside the target project. It does not make backup copies of existing package-manager config, because those files can contain private registry tokens. Review the project diff before committing.
+
+User-wide setup:
+
+```sh
+./scripts/setup-package-age-safety.sh --mode=user-wide --dry-run
+./scripts/setup-package-age-safety.sh --mode=user-wide --confirm-user-wide
+```
+
+Restore user-wide backups:
+
+```sh
+./scripts/setup-package-age-safety.sh --restore=/path/to/backup
+```
 
 ## Settings
 
@@ -14,13 +43,15 @@ Package managers usually install the newest matching package. If a bad actor hij
 | pip | `uploaded-prior-to` | `P7D` | ISO duration |
 | mise | `minimum_release_age` | `7d` | duration |
 
-## Important npm Rule
+## Important Version Rules
 
-Do not set `min-release-age` on npm older than `11.10.0`. Older npm versions may ignore the setting. The setup script stops before touching npm config if it detects an old npm.
+- npm must be `11.10.0` or newer before relying on `min-release-age`.
+- pip duration upload filters require modern pip support. The scripts skip or warn when local pip cannot support the setting.
+- Project-local pip config is provided as a template because pip does not automatically read a repo-root config file. Pip installs are protected only when `PIP_CONFIG_FILE=.agentic-engineering/package-safety/pip.conf`, `PIP_UPLOADED_PRIOR_TO=P7D`, or user/site pip config is active.
 
-## Tools To Avoid For Agent Installs
+## Unsupported Managers
 
-Some package managers do not currently provide a native release-age delay. They may still be useful, but they should not be the default path for AI-agent dependency installs:
+These package managers do not currently have a native 7-day release-age gate in this pack:
 
 - RubyGems `gem`: Ruby packages.
 - Bundler: Ruby application dependencies.
@@ -30,4 +61,4 @@ Some package managers do not currently provide a native release-age delay. They 
 - Go modules: Go packages.
 - Composer: PHP packages.
 
-Use lockfiles, hashes, pinned versions, and manual review for these ecosystems.
+Use lockfiles, hashes, pinned versions, manual review, or a safer install path for these ecosystems.

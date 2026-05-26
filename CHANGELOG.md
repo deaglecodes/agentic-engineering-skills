@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+- Hardened the repo for a v0.2 release pass.
+- Rewrote the README around adoption, safety model, install modes, evals, hooks, and honest comparison with the Karpathy-inspired reference repo.
+- Added first-class Codex, Claude Code, Cursor, and generic agent docs.
+- Added Claude plugin-style metadata, packaged hook examples, and settings examples.
+- Added standardized skill structure and new verification, debug, repo-audit, and release-readiness skills.
+- Changed package-age setup to default to project-local files and require explicit confirmation for user-wide config.
+- Added local validation, eval smoke checks, and stronger fixture tests.
+- Added release checklist, troubleshooting, architecture docs, and roadmap.
 - Added issue templates for bugs, features, and safety reports.
 - Added a before/after demo.
 - Simplified package-age logic by sharing common shell helpers.

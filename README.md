@@ -1,90 +1,184 @@
 # Agentic Engineering Skills
 
-Agentic Engineering Skills is an open-source skill pack for people who build software with AI. It turns loose vibe-coding into a steadier loop: clarify the goal, write a plan, make small changes, verify the result, inspect the diff, and protect package installs from fresh malicious releases.
+Agentic Engineering Skills is a cross-agent workflow pack that helps AI coding agents move from loose vibe coding to spec-driven, verified, security-aware engineering.
 
-The project is inspired by Andrej Karpathy's "agentic engineering" framing, but it is not branded as a Karpathy project. See [docs/sources.md](docs/sources.md) for the sources and package-manager references used.
+## Problem
 
-## What Is Included
+AI coding agents are useful, but they often make hidden assumptions, overbuild, touch unrelated files, install fresh dependencies without supply-chain guardrails, and finish without proof. This pack gives agents a compact operating loop and local checks so their work is easier to trust.
 
-- `skills/`: canonical Agent Skills.
-- `adapters/codex/AGENTS.md`: a Codex-ready instruction adapter.
-- `adapters/claude/CLAUDE.md`: a Claude Code-ready instruction adapter.
-- `adapters/cursor/.cursor/rules/agentic-engineering.mdc`: a Cursor rule adapter.
-- `templates/package-age/`: public-safe examples for 7-day package release-age settings.
-- `scripts/`: safe setup and check scripts that avoid printing secrets.
-- `hooks/`: optional hook examples for review gates.
+## What This Is
 
-## Install In An Agent
+- Reusable skills for planning, verification, debugging, diff review, dependency safety, repo audit, and release readiness.
+- Adapters for Codex, Claude Code, Cursor, and generic instruction-file agents.
+- Optional Claude Code hook examples for package-install gating and pre-finish verification.
+- Local scripts for package-age setup, validation, secret-like string scanning, and smoke checks.
+- Evals and demos that describe expected agent behavior.
 
-Use one adapter per project:
+## What This Is Not
+
+- Not an official OpenAI, Anthropic, Cursor, or Karpathy project.
+- Not a sandbox, vulnerability scanner, or substitute for human code review.
+- Not a promise that every package manager can enforce release-age delays.
+- Not a tool that should mutate global user config by default.
+
+## Quickstart
+
+Clone and validate:
 
 ```sh
+git clone https://github.com/deaglecodes/agentic-engineering-skills.git
+cd agentic-engineering-skills
+./scripts/validate-repo.sh
+```
+
+Install one adapter per target project:
+
+```sh
+# Codex
 cp adapters/codex/AGENTS.md /path/to/project/AGENTS.md
+
+# Claude Code
 cp adapters/claude/CLAUDE.md /path/to/project/CLAUDE.md
+
+# Cursor
 mkdir -p /path/to/project/.cursor/rules
 cp adapters/cursor/.cursor/rules/agentic-engineering.mdc /path/to/project/.cursor/rules/
+
+# Generic agents
+cp adapters/generic/AGENTIC_ENGINEERING.md /path/to/project/AGENTIC_ENGINEERING.md
 ```
 
-Install only the skill folders your agent supports. The `skills/` folder is the source of truth; adapters are short reminders.
-
-## Package Safety
-
-Run checks without changing anything:
+Project-local package safety:
 
 ```sh
-./scripts/check-package-age-safety.sh
+./scripts/check-package-age-safety.sh --scope=project --target /path/to/project
+./scripts/setup-package-age-safety.sh --mode=project-local --target /path/to/project
 ```
 
-Preview what setup would do:
+Project-local setup writes only files inside the target project and does not make backup copies of existing package-manager config, so it will not duplicate private registry tokens. Review the resulting diff before committing. For pip, project-local setup writes a template only; use `PIP_CONFIG_FILE=.agentic-engineering/package-safety/pip.conf`, `PIP_UPLOADED_PRIOR_TO=P7D`, or user/site pip config for actual pip installs.
+
+User-wide package safety is explicit:
 
 ```sh
-./scripts/setup-package-age-safety.sh --dry-run
+./scripts/setup-package-age-safety.sh --mode=user-wide --dry-run
+./scripts/setup-package-age-safety.sh --mode=user-wide --confirm-user-wide
 ```
 
-Apply user-wide package safety:
+## Install Modes
+
+| Mode | Best for | What changes |
+| --- | --- | --- |
+| Adapter copy | One project | Adds one instruction file to the target repo. |
+| Skill copy | Agents with reusable skill support | Copies selected `skills/*` folders into the agent's skill directory. |
+| Claude plugin-style package | Claude Code plugin workflows | Uses `.claude-plugin/plugin.json` and the packaged `skills/`. Hooks remain optional examples. |
+| Hooks | Claude Code users who want local guardrails | Adds settings entries that call scripts under `hooks/claude/`. |
+| Package-safety templates | Repos that allow shared config | Adds project-local package-manager config files. |
+
+## Agent Guides
+
+- Codex: [docs/codex.md](docs/codex.md)
+- Claude Code: [docs/claude.md](docs/claude.md)
+- Cursor: [docs/cursor.md](docs/cursor.md)
+- Generic agents: [docs/generic.md](docs/generic.md)
+
+## Safety Model
+
+The default safety posture is local and reversible:
+
+- Inspect before editing.
+- Ask only outcome-changing questions.
+- Keep diffs narrow.
+- Do not print secrets or private config values.
+- Prefer project-local config over user-wide config.
+- Use dry runs and backups before user-wide changes.
+- Verify before handoff.
+- Review the diff before final claims.
+
+Run the full local gate:
 
 ```sh
-./scripts/setup-package-age-safety.sh
+./scripts/validate-repo.sh
 ```
 
-Important: setup changes package-manager config files in your home directory. It creates private backups first by default. Use `--dry-run` to preview, or `--no-backup` if you do not want backup copies of existing config files.
+## Package-Age Safety
 
-## Demo
+The package-safety policy is a 7-day release-age delay where supported:
 
-Loose prompt:
+| Tool | Setting | 7-day value |
+| --- | --- | --- |
+| npm | `min-release-age` | `7` days, npm `11.10.0` or newer |
+| pnpm | `minimumReleaseAge` | `10080` minutes |
+| Bun | `minimumReleaseAge` | `604800` seconds |
+| Yarn | `npmMinimalAgeGate` | `7d` |
+| uv | `exclude-newer` | `P7D` |
+| pip | `uploaded-prior-to` | `P7D`, pip version support required |
+| mise | `minimum_release_age` | `7d` |
 
-> build my app idea and make it work
+For pip, the project-local file is not auto-read by pip. The gate is active only when pip is pointed at it with `PIP_CONFIG_FILE`, when `PIP_UPLOADED_PRIOR_TO=P7D` is set, or when user/site pip config contains the setting.
 
-Agentic prompt:
+Unsupported or weakly covered managers such as Cargo, Go modules, Composer, Homebrew, RubyGems, Bundler, and Mix should be treated as manual-review paths for agent-driven installs.
 
-> Inspect the repo first. Clarify anything that changes the outcome. Make the smallest useful version, verify it, review the diff for secrets or risky package installs, then summarize what changed in plain English.
+## Hooks
 
-See [docs/demo.md](docs/demo.md) for a before/after workflow.
+Claude Code hook examples live under `hooks/claude/`:
 
-## Hook Usage
+- `pretooluse-package-install-safety.sh`: blocks package install commands without a project or user/runtime age gate.
+- `stop-verify-before-finish.sh`: blocks final stop when `hooks/verify-before-finish.sh` fails.
+- `posttooluse-light-checks.sh`: reports whitespace issues after edits.
+- `sessionstart-reminder.sh`: adds a short workflow reminder.
 
-The hook scripts are optional guardrails for agent workflows:
+See [docs/hooks.md](docs/hooks.md) and [docs/claude.md](docs/claude.md).
+
+## Skills
+
+The core skills are:
+
+- `ae-core-charter`
+- `ae-spec-and-plan`
+- `ae-verification-loop`
+- `ae-diff-review`
+- `ae-security-boundaries`
+- `ae-dependency-safety`
+- `ae-debug-loop`
+- `ae-test-first-fix`
+- `ae-repo-audit`
+- `ae-release-readiness`
+
+Each skill defines when to use it, workflow, do and don't rules, expected output, verification checklist, and failure modes.
+
+## Evals And Demos
+
+Behavior examples live in `docs/demo.md` and `evals/prompts/`. Run the eval smoke check:
 
 ```sh
-./hooks/verify-before-finish.sh
-./hooks/block-risky-package-install.sh npm
-./hooks/block-risky-package-install.sh pnpm
+./scripts/run-evals-smoke.sh
 ```
 
-Use `verify-before-finish.sh` before publishing or handing off changes. Use `block-risky-package-install.sh <tool>` before agent-driven installs. See [docs/hooks.md](docs/hooks.md).
+The eval prompts cover ambiguity handling, bug fix workflow, dependency add safety, security-sensitive requests, scope control, diff review, final validation summary, and docs maintenance.
 
-## Safety Promise
+## Comparison With Karpathy Skills
 
-- The setup script makes private backups under `~/.cache/agentic-engineering/backups` before editing existing files, keeps only recent backup folders, and supports `--no-backup`.
-- The scripts do not print config file contents.
-- The repo ignores common secret file patterns.
-- npm is only configured when the detected npm is version `11.10.0` or newer.
-- Package managers without a native 7-day release-age setting are reported as tools to avoid for AI-agent installs.
+This project is directly inspired by the reference repo, but it has a different scope:
 
-## Package Age Defaults
+| Area | Karpathy-inspired reference | Agentic Engineering Skills |
+| --- | --- | --- |
+| Main focus | A compact behavioral guide for Claude Code | A cross-agent workflow pack with adapters, hooks, scripts, evals, and release assets |
+| Agent support | Claude Code and Cursor | Codex, Claude Code, Cursor, and generic agents |
+| Package safety | Not the focus | 7-day package release-age policy, audit/setup scripts, and hook examples |
+| Verification | Behavioral principle | Local validation script, fixtures, eval smoke checks, and release checklist |
+| Complexity | Very small and easy to read | Broader and more operational, with more moving parts |
 
-The default policy is 7 days: npm `min-release-age=7`, pnpm `minimumReleaseAge: 10080`, Bun `minimumReleaseAge = 604800`, Yarn `npmMinimalAgeGate: 7d`, uv `exclude-newer = "P7D"`, pip `uploaded-prior-to = P7D`, and mise `minimum_release_age = "7d"`.
+Honest tradeoff: the reference repo is simpler and easier to install. This repo is heavier because it tries to cover multiple agents, supply-chain safety, hooks, and public-release readiness.
 
-## Known Limitations
+## Roadmap
 
-Some package managers do not currently expose a native 7-day release-age gate. The install hook blocks them for agent-driven installs by default: RubyGems, Bundler, Hex/Mix, Homebrew, Cargo, Go modules, and Composer. Use lockfiles, hashes, pinned versions, and manual review for those ecosystems.
+See [ROADMAP.md](ROADMAP.md).
+
+## Release And Troubleshooting
+
+- Architecture: [docs/architecture.md](docs/architecture.md)
+- Release checklist: [docs/release-checklist.md](docs/release-checklist.md)
+- Troubleshooting: [docs/troubleshooting.md](docs/troubleshooting.md)
+- Contributing: [CONTRIBUTING.md](CONTRIBUTING.md)
+- Security: [SECURITY.md](SECURITY.md)
+- Sources: [docs/sources.md](docs/sources.md)
