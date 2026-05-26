@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-ROOT="$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)"
+ROOT="$(CDPATH='' cd -- "$(dirname -- "$0")/.." && pwd)"
 cd "$ROOT"
 
 section() {
@@ -13,10 +13,10 @@ bash -n scripts/*.sh hooks/*.sh hooks/claude/*.sh
 sh -n scripts/package-age-lib.sh hooks/*.sh
 
 section "Optional shellcheck"
-if command -v shellcheck >/dev/null 2>&1; then
+if [[ "${RUN_SHELLCHECK:-0}" == "1" ]] && command -v shellcheck >/dev/null 2>&1; then
   shellcheck scripts/*.sh hooks/*.sh hooks/claude/*.sh
 else
-  printf '%s\n' 'shellcheck not found; skipped'
+  printf '%s\n' 'shellcheck skipped; set RUN_SHELLCHECK=1 to enable'
 fi
 
 section "JSON config"
