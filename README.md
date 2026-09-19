@@ -1,18 +1,19 @@
 # Agentic Engineering Skills
 
-Agentic Engineering Skills is a small workflow pack for people who build software with AI agents.
+An independent workflow pack inspired by [Andrej Karpathy's writing on agentic engineering](https://karpathy.bearblog.dev/sequoia-ascent-2026/).
 
 It helps an agent slow down just enough to inspect the project, make a narrow plan, protect secrets, use safer package installs, verify the work, and explain what changed in plain English.
 
 Current release: `0.2.0`.
 
-## The Gamechanger
+## What You Can Use It For
 
-Most AI coding tools make the agent faster. This pack makes the agent more trustworthy.
+- **Fix a bug:** have the agent reproduce the failure, make a scoped repair, and check the result.
+- **Build a feature:** define success, inspect the existing code, implement it, and report verification.
+- **Review a change:** inspect the diff for unrelated edits, exposed private data, and missing checks.
+- **Check a dependency install:** use the optional scripts to check a 7-day package release-age policy.
 
-Instead of hoping a long prompt is followed, Agentic Engineering Skills turns good engineering behavior into reusable instructions, optional hooks, and local checks that travel with your project. The result is a practical upgrade from "the AI wrote code" to "the AI inspected the repo, protected secrets, avoided risky fresh packages, kept the change small, proved it works, and showed the evidence."
-
-For non-technical builders, that is the unlock: you can keep the speed and creativity of AI-assisted building while adding the habits a senior engineer would normally bring to the work.
+The pack supplies instructions and tools. Your coding agent performs the work; its results still need checking. The automated checks in this repository validate the pack and installer, not a measured improvement in model performance.
 
 ## What You Get
 
@@ -54,27 +55,26 @@ cd agentic-engineering-skills
 ./scripts/validate-repo.sh
 ```
 
-Copy one adapter into each project where you want the workflow:
+Install into an existing project (Python 3.9+ required). Preview first:
 
 ```sh
-# Codex
-cp adapters/codex/AGENTS.md /path/to/project/AGENTS.md
-
-# Claude Code
-cp adapters/claude/CLAUDE.md /path/to/project/CLAUDE.md
-
-# Cursor
-mkdir -p /path/to/project/.cursor/rules
-cp adapters/cursor/.cursor/rules/agentic-engineering.mdc /path/to/project/.cursor/rules/
-
-# Generic agents
-cp adapters/generic/AGENTIC_ENGINEERING.md /path/to/project/AGENTIC_ENGINEERING.md
+./scripts/install.sh --agent codex --target /path/to/project --dry-run
+./scripts/install.sh --agent codex --target /path/to/project
 ```
 
-Then try a prompt like:
+Choose `codex`, `claude`, `cursor`, or `generic`. The installer preserves existing project instructions and copies the referenced skills and tools into `.agentic-engineering/pack/`. It does not enable hooks, alter package-manager settings, or register native slash commands. [Installation and removal details](docs/install.md).
+
+Start a new agent session in the target project, then try:
 
 ```text
 Use the Agentic Engineering workflow. Inspect this repo first, make the smallest useful change, verify it, review the diff, and explain the result plainly.
+```
+
+Remove the managed installation from the source checkout:
+
+```sh
+./scripts/install.sh --target /path/to/project --uninstall --dry-run
+./scripts/install.sh --target /path/to/project --uninstall
 ```
 
 ## Package Safety
@@ -156,7 +156,7 @@ Run everything:
 ./scripts/validate-repo.sh
 ```
 
-Run only the behavior smoke prompts:
+Check the evaluation prompt structure (this does not run a model):
 
 ```sh
 ./scripts/run-evals-smoke.sh
@@ -172,7 +172,7 @@ The secret scan is intentionally simple. It is a last-minute public-release chec
 
 ## Design Tradeoff
 
-This project is inspired by small agent-skill repos, including Karpathy-style workflow notes, but it is more operational: it includes adapters, scripts, hooks, tests, and package-safety templates. That makes it heavier than a single instruction file, so the recommended install path is to copy only the adapter and optional pieces you actually need.
+The project combines Karpathy-inspired engineering principles with this repository's own adapters, installer, scripts, hooks, tests, and package-safety templates. It is not an official "Karpathy Method" or an endorsed implementation. [Sources and attribution](docs/sources.md) separate the inspiration from the implementation.
 
 ## Contributing
 

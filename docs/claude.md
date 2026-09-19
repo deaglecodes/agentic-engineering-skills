@@ -5,10 +5,11 @@ Claude Code supports project instructions through `CLAUDE.md`, settings-driven h
 ## Per-Project Install
 
 ```sh
-cp adapters/claude/CLAUDE.md /path/to/project/CLAUDE.md
+./scripts/install.sh --agent claude --target /path/to/project --dry-run
+./scripts/install.sh --agent claude --target /path/to/project
 ```
 
-Uninstall by deleting the copied file or removing the Agentic Engineering section.
+Run `./scripts/install.sh --target /path/to/project --uninstall` from the source checkout. Preview with `--dry-run`. Modified managed files are preserved by refusing removal. See [installation details](install.md).
 
 ## Plugin-Style Packaging
 

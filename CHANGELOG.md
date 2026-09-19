@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Added a project-local installer for Codex, Claude Code, Cursor, and generic agents, with a preview, preserved existing instructions, working local tool paths, repeat-install detection, and removal that refuses modified managed files.
+- Added installer fixtures for all four adapters, real installed-tool invocation, preservation of user edits, path conflicts, and symlink refusal.
+- Clarified the Karpathy inspiration and separated primary sources, third-party interpretations, and this repository's implementation choices.
+- Clarified that eval smoke checks validate prompt structure rather than model behavior.
 - Simplified the README so the project purpose, quickstart, package safety, hooks, and checks are easier to understand.
 - Added a clearer README USP section explaining the practical jump from loose AI coding to verified agentic engineering.
 - Removed the old v0.2 audit note from public docs because it was internal release history, not user-facing guidance.

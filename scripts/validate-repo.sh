@@ -31,6 +31,9 @@ section "Secret scan"
 section "Fixture tests"
 ./scripts/test-fixtures.sh
 
+section "Project installer tests"
+python3 -B -m unittest discover -s tests -p 'test_*.py'
+
 section "Eval smoke"
 ./scripts/run-evals-smoke.sh
 

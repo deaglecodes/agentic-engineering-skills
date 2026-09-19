@@ -39,6 +39,9 @@ for path in \
   "$root/templates/package-age/mise-config.toml" \
   "$root/scripts/package-age-lib.sh" \
   "$root/scripts/validate-repo.sh" \
+  "$root/scripts/install.sh" \
+  "$root/scripts/project_install.py" \
+  "$root/tests/test_project_install.py" \
   "$root/scripts/run-evals-smoke.sh" \
   "$root/hooks/claude/pretooluse-package-install-safety.sh" \
   "$root/hooks/claude/stop-verify-before-finish.sh" \

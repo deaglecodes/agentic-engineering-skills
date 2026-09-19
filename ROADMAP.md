@@ -11,6 +11,8 @@
 
 ## v0.3 Candidates
 
+- Implemented: project-local adapter installation and safe removal, with preview and preservation fixtures.
+- Next: evaluate the installed workflow on a small set of real coding tasks, reporting the model, task, checks, and failures; structural tests alone do not measure agent quality.
 - Add machine-readable eval results once a stable runner exists.
 - Add more ecosystem-specific dependency safety recipes.
 - Add adapter sync tests to detect drift between skills and instructions.
