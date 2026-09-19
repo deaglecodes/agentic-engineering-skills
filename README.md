@@ -2,15 +2,38 @@
 
 An independent workflow pack inspired by [Andrej Karpathy's writing on agentic engineering](https://karpathy.bearblog.dev/sequoia-ascent-2026/).
 
-It helps an agent slow down just enough to inspect the project, make a narrow plan, protect secrets, use safer package installs, verify the work, and explain what changed in plain English.
+Give coding agents a repeatable way to finish: run explicit checks, detect changes to unrelated files, and save results you can inspect.
 
-Current release: `0.2.0`.
+Works with Codex, Claude Code, Cursor, and generic agents. The installer and verification runner use Python's standard library.
+
+Current release: `0.2.0`. Project installation and verification receipts on this branch are unreleased.
+
+## Verification You Can Inspect
+
+The new [verification runner](docs/verification-receipts.md) turns a project's check plan into a JSON receipt:
+
+```text
+Before edits     Snapshot unrelated files you want to preserve
+After edits      Run each check with its own exit code and timeout
+At handoff       Read the receipt: checks, file changes, pass or fail
+```
+
+A later successful command cannot erase an earlier check's failure. Protected files are compared before and after checks. The runner detects changes; it does not undo them or automatically block an agent from finishing.
+
+Try the [five-case demo](evals/verification-demo/README.md), including passing and failing controls:
+
+```sh
+python3 -B evals/verification-demo/run.py
+```
+
+The runner flags all three demonstrated false-success cases that a plain shell sequence misses. This is a tool demonstration against a specific shell shortcut, not evidence that the pack makes a model better at coding. The model pilot below remains a tie.
 
 ## What You Can Use It For
 
 - **Fix a bug:** have the agent reproduce the failure, make a scoped repair, and check the result.
 - **Build a feature:** define success, inspect the existing code, implement it, and report verification.
 - **Review a change:** inspect the diff for unrelated edits, exposed private data, and missing checks.
+- **Save verification evidence:** run separate checks, compare protected files, and keep a receipt.
 - **Check a dependency install:** use the optional scripts to check a 7-day package release-age policy.
 
 The pack supplies instructions and tools. Your coding agent performs the work; its results still need checking. Repository checks validate the pack and installer. A separate model pilot measures behavior on a small, explicit task set.
@@ -24,6 +47,7 @@ These were three authored Python bug-fix exercises, each repeated twice per cond
 ## What You Get
 
 - Agent instructions for Codex, Claude Code, Cursor, and generic coding agents.
+- A verification runner with per-check results, timeouts, protected-file snapshots, and JSON receipts.
 - Reusable skills for planning, debugging, verification, security boundaries, dependency safety, diff review, repo audit, and release readiness.
 - Optional Claude Code hooks that can block risky package installs and ask for verification before finishing.
 - Local scripts for 7-day package release-age checks, repo validation, fixture tests, eval smoke tests, and secret-like string scanning.
@@ -145,6 +169,7 @@ See [docs/hooks.md](docs/hooks.md) and [docs/claude.md](docs/claude.md).
 ## Docs
 
 - Install guide: [docs/install.md](docs/install.md)
+- Verification receipts: [docs/verification-receipts.md](docs/verification-receipts.md)
 - Codex guide: [docs/codex.md](docs/codex.md)
 - Claude Code guide: [docs/claude.md](docs/claude.md)
 - Cursor guide: [docs/cursor.md](docs/cursor.md)

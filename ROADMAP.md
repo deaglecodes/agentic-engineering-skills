@@ -12,6 +12,7 @@
 ## v0.3 Candidates
 
 - Implemented: project-local adapter installation and safe removal, with preview and preservation fixtures.
+- Implemented: verification receipts with explicit check results, timeouts, and protected-file comparisons; a reproducible mechanism demo covers success and failure controls.
 - Completed: [paired pilot and machine-readable results](evals/paired-pilot/results/2026-09-19/report.md) on three authored coding exercises; both conditions passed every run, with higher time and token usage for the pack.
 - Next: freeze independent repository issues and compare conditions on harder scope, dependency, and verification decisions. The current pilot does not establish a model-quality advantage.
 - Add more ecosystem-specific dependency safety recipes.

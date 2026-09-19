@@ -40,3 +40,7 @@ Use the matching Agent Skill when the task fits:
 ## Optional Hooks
 
 This repo includes optional Claude Code hook examples under `hooks/claude/` and settings examples under `examples/claude/`. Use them locally only after reading `docs/claude.md`.
+
+## Optional Verification Receipts
+
+For several checks or unrelated files that must stay unchanged, use `ae-verification-loop` and `./scripts/verify.sh`. Take the protected-file snapshot before edits; run the check plan after implementation. A receipt records results and detected changes, not proof that the chosen tests cover everything.

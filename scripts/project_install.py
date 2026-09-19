@@ -58,7 +58,7 @@ def source_files():
             relative = path.relative_to(ROOT)
             # Evaluation tasks, answers, and transcripts belong in the source repo,
             # not in every user's installed workflow or future evaluation workspace.
-            if relative.parts[:2] == ("evals", "paired-pilot"):
+            if relative.parts[0] == "evals" and relative.parts[1] not in {"prompts", "README.md"}:
                 continue
             checked_path(ROOT, relative)
             if any(part.startswith(".") for part in path.relative_to(ROOT / directory).parts):

@@ -20,7 +20,7 @@ For Codex, Claude, and generic agents, the installer appends a marked section wh
 
 The public pack is copied into `.agentic-engineering/pack/`; the manifest at `.agentic-engineering/install.json` records its files and the generated instruction section. The manifest does not copy your original instructions. Scripts in the installed adapter point to their actual location in the project.
 
-The paired-pilot task corpus, reference repairs, and run transcripts remain in the source repository and are not included in installations.
+Evaluation runners, task corpora, reference repairs, and recorded results remain in the source repository and are not included in installations. The verification receipt tool is included under `.agentic-engineering/pack/scripts/verify.sh`; see the [receipt guide](verification-receipts.md).
 
 This installs local skill reference files, not native slash commands or a registered plugin. The adapter tells the agent which `SKILL.md` files to read. Hooks and package-manager settings are separate, optional steps. No global configuration is changed.
 

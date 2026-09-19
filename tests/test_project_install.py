@@ -43,6 +43,7 @@ class ProjectInstallTests(unittest.TestCase):
                 self.assertIn(".agentic-engineering/pack/skills/ae-core-charter/SKILL.md", text)
                 self.assertNotIn("`./scripts/", text)
                 self.assertFalse((self.target / ".agentic-engineering/pack/evals/paired-pilot").exists())
+                self.assertFalse((self.target / ".agentic-engineering/pack/evals/verification-demo").exists())
                 if agent == "cursor":
                     self.assertTrue(text.startswith("---\n"))
                 tool = self.target / ".agentic-engineering/pack/scripts/setup-package-age-safety.sh"

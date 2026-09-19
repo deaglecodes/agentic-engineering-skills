@@ -33,3 +33,7 @@ Cursor rules can remind the agent to use package-age safety, but they do not aut
 - Cursor does not read `.claude-plugin/` or `CLAUDE.md` by default.
 - Hook behavior depends on external tooling; the Cursor rule is an instruction, not an enforcement layer.
 - Keep existing project rules in mind when merging this rule.
+
+## Verification Receipts
+
+The installed `./.agentic-engineering/pack/scripts/verify.sh` records individual check results and compares explicitly protected files against a snapshot taken before edits. It works independently of agent hooks. See [the plan format and commands](verification-receipts.md); a single direct check may be enough for small tasks.

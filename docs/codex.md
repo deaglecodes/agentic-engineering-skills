@@ -66,3 +66,7 @@ The expected behavior is: inspect first, edit narrowly, run a relevant check, re
 ## Limitations
 
 Codex behavior depends on the active runtime instructions and available tools. Hooks in this repo are examples; Codex will not automatically use Claude Code hook settings.
+
+## Verification Receipts
+
+The installed `./.agentic-engineering/pack/scripts/verify.sh` records individual check results and compares explicitly protected files against a snapshot taken before edits. It works independently of agent hooks. See [the plan format and commands](verification-receipts.md); a single direct check may be enough for small tasks.

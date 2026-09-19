@@ -31,7 +31,7 @@ section "Secret scan"
 section "Fixture tests"
 ./scripts/test-fixtures.sh
 
-section "Project installer tests"
+section "Python tool and installer tests"
 python3 -B -m unittest discover -s tests -p 'test_*.py'
 
 section "Eval smoke"
@@ -42,6 +42,13 @@ if [ -f evals/paired-pilot/run.py ]; then
   python3 -B evals/paired-pilot/run.py --check
 else
   printf '%s\n' 'pilot corpus not bundled in installed packs; grader checks skipped'
+fi
+
+section "Verification receipt demo (no model calls)"
+if [ -f evals/verification-demo/run.py ]; then
+  python3 -B evals/verification-demo/run.py
+else
+  printf '%s\n' 'demo not bundled in installed packs; skipped'
 fi
 
 section "Executable permissions"

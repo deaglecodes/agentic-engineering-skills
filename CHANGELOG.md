@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Added verification receipts: explicit per-command results and timeouts, snapshots of protected files, plan identity checks, and private-by-default JSON evidence. Added 15 behavior tests and a five-case mechanism demo with both controls and all outcomes published.
+- Updated the verification skill and all adapters to route to the optional runner, and presented the executable feature alongside the unchanged model-pilot findings.
 - Added a reproducible paired coding pilot with three authored tasks, frozen external graders, two repetitions per condition, and public results: all six runs passed in each condition, with higher observed time and token usage for the pack.
 - Added grader self-checks to repository validation without model calls, and kept evaluation tasks, answers, and transcripts out of project installations.
 - Added a project-local installer for Codex, Claude Code, Cursor, and generic agents, with a preview, preserved existing instructions, working local tool paths, repeat-install detection, and removal that refuses modified managed files.

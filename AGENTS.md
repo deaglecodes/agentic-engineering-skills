@@ -9,6 +9,7 @@ This repo contains reusable AI-agent skills, adapters, hooks, eval prompts, and 
 - Prefer plain English over jargon. The target user may not be an engineer.
 - Project installs must preserve existing instructions. Keep installer examples in the README and adapter guides consistent; test removal and edited-file refusal.
 - Before finishing changes, run `./scripts/validate-repo.sh` or document why it could not run.
+- Verification runner changes need behavior tests for failed commands, timeouts, protected files, and installed invocation; keep the mechanism demo distinct from model-quality evidence.
 - Package-manager safety examples must use a 7-day release-age delay.
 - Project-local package safety is the default. User-wide setup must require an explicit confirmation flag, dry-run path, backups, and restore instructions.
 - Do not push to `main`, publish a plugin, tag a release, or mutate global user config unless the user explicitly asks.

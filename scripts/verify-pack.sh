@@ -41,6 +41,9 @@ for path in \
   "$root/scripts/validate-repo.sh" \
   "$root/scripts/install.sh" \
   "$root/scripts/project_install.py" \
+  "$root/scripts/verify.sh" \
+  "$root/scripts/verification.py" \
+  "$root/docs/verification-receipts.md" \
   "$root/tests/test_project_install.py" \
   "$root/scripts/run-evals-smoke.sh" \
   "$root/hooks/claude/pretooluse-package-install-safety.sh" \

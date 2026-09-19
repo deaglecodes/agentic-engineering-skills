@@ -24,3 +24,7 @@ Use the Agentic Engineering workflow. Inspect this repo, make one low-risk docs 
 ## Limitations
 
 Generic agents may not support reusable skills, hooks, stop gates, or structured plans. The installed adapter links to skill files for the agent to read. Run the target application's checks and the optional scripts under `.agentic-engineering/pack/` manually; validating the pack itself does not validate the application.
+
+## Verification Receipts
+
+The installed `./.agentic-engineering/pack/scripts/verify.sh` records individual check results and compares explicitly protected files against a snapshot taken before edits. It works independently of agent hooks. See [the plan format and commands](verification-receipts.md); a single direct check may be enough for small tasks.

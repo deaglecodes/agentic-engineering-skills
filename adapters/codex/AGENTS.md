@@ -42,3 +42,7 @@ Use user-wide setup only when explicitly requested:
 ## Finish Rule
 
 Finish only after the requested outcome is proven by current evidence. If checks could not run, say that plainly and name the remaining risk.
+
+## Optional Verification Receipts
+
+For several checks or unrelated files that must stay unchanged, use `ae-verification-loop` and `./scripts/verify.sh`. Take the protected-file snapshot before edits; run the check plan after implementation. A receipt records results and detected changes, not proof that the chosen tests cover everything.

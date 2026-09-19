@@ -1,0 +1,327 @@
+{
+  "kind": "mechanism_demo",
+  "schema": 1,
+  "scope": "Five chosen feature demonstrations, including passing and failing controls. Not a model comparison or representative benchmark.",
+  "comparator": "Plain sh sequence using semicolons and only its final exit status. Careful agents, CI runners, and correctly chained commands can already avoid masked failures.",
+  "tool_sha256": "63fa8d031da6dbe3b48f57b206a95f0d67d2ffda833ac97dc679907f2d8b4684",
+  "demo_sha256": "a2c8a5bdddf65bf46d3a3079766128fde6cbdeb206a6b65a377f16eb0f8c0fc0",
+  "summary": {
+    "plain shell sequence": {
+      "cases": 5,
+      "false_greens": 3,
+      "matched_expected": 2
+    },
+    "receipt runner": {
+      "cases": 5,
+      "false_greens": 0,
+      "matched_expected": 5
+    }
+  },
+  "runs": [
+    {
+      "case": "clean control",
+      "condition": "plain shell sequence",
+      "expected": "passed",
+      "observed": "passed",
+      "exit_code": 0,
+      "false_green": false,
+      "plan_sha256": "f5c6a0da6332dc6a93dd77e0f96388f4c8c30cd39e939901167a34ec662c19d5",
+      "notes_preserved": true,
+      "receipt": null
+    },
+    {
+      "case": "clean control",
+      "condition": "receipt runner",
+      "expected": "passed",
+      "observed": "passed",
+      "exit_code": 0,
+      "false_green": false,
+      "plan_sha256": "f5c6a0da6332dc6a93dd77e0f96388f4c8c30cd39e939901167a34ec662c19d5",
+      "notes_preserved": true,
+      "receipt": {
+        "schema": 1,
+        "kind": "verification_receipt",
+        "started_at": "2026-09-19T15:15:12.837589+00:00",
+        "status": "passed",
+        "plan_sha256": "f5c6a0da6332dc6a93dd77e0f96388f4c8c30cd39e939901167a34ec662c19d5",
+        "checks": [
+          {
+            "name": "unit",
+            "status": "passed",
+            "exit_code": 0,
+            "seconds": 0.023,
+            "error_type": null,
+            "output_bytes": 8,
+            "output_sha256": "a7b0d87f09eda291afc9252bdea96cbb2181a0d5c1a1a77c8ade3842437999ec"
+          },
+          {
+            "name": "lint",
+            "status": "passed",
+            "exit_code": 0,
+            "seconds": 0.021,
+            "error_type": null,
+            "output_bytes": 8,
+            "output_sha256": "1033b53b7c1704168c45b722ef1b02259048e7f3f4a7d442e391ca7bc022f2e7"
+          }
+        ],
+        "plan_unchanged": true,
+        "protected_before_checks": [
+          {
+            "path": "notes.md",
+            "status": "unchanged"
+          }
+        ],
+        "protected_after_checks": [
+          {
+            "path": "notes.md",
+            "status": "unchanged"
+          }
+        ]
+      }
+    },
+    {
+      "case": "earlier check fails",
+      "condition": "plain shell sequence",
+      "expected": "failed",
+      "observed": "passed",
+      "exit_code": 0,
+      "false_green": true,
+      "plan_sha256": "80536ada292a15156f630ef6cb1eecd38d1c946a585f28507b60ba963590cc97",
+      "notes_preserved": true,
+      "receipt": null
+    },
+    {
+      "case": "earlier check fails",
+      "condition": "receipt runner",
+      "expected": "failed",
+      "observed": "failed",
+      "exit_code": 1,
+      "false_green": false,
+      "plan_sha256": "80536ada292a15156f630ef6cb1eecd38d1c946a585f28507b60ba963590cc97",
+      "notes_preserved": true,
+      "receipt": {
+        "schema": 1,
+        "kind": "verification_receipt",
+        "started_at": "2026-09-19T15:15:13.053579+00:00",
+        "status": "failed",
+        "plan_sha256": "80536ada292a15156f630ef6cb1eecd38d1c946a585f28507b60ba963590cc97",
+        "checks": [
+          {
+            "name": "unit",
+            "status": "failed",
+            "exit_code": 7,
+            "seconds": 0.022,
+            "error_type": null,
+            "output_bytes": 0,
+            "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "lint",
+            "status": "passed",
+            "exit_code": 0,
+            "seconds": 0.021,
+            "error_type": null,
+            "output_bytes": 8,
+            "output_sha256": "1033b53b7c1704168c45b722ef1b02259048e7f3f4a7d442e391ca7bc022f2e7"
+          }
+        ],
+        "plan_unchanged": true,
+        "protected_before_checks": [
+          {
+            "path": "notes.md",
+            "status": "unchanged"
+          }
+        ],
+        "protected_after_checks": [
+          {
+            "path": "notes.md",
+            "status": "unchanged"
+          }
+        ]
+      }
+    },
+    {
+      "case": "last check fails control",
+      "condition": "plain shell sequence",
+      "expected": "failed",
+      "observed": "failed",
+      "exit_code": 3,
+      "false_green": false,
+      "plan_sha256": "2a78aa759b23219f2b9a223a3fb2923de84c1a6a9a4f592e1bf3fc008e0727a7",
+      "notes_preserved": true,
+      "receipt": null
+    },
+    {
+      "case": "last check fails control",
+      "condition": "receipt runner",
+      "expected": "failed",
+      "observed": "failed",
+      "exit_code": 1,
+      "false_green": false,
+      "plan_sha256": "2a78aa759b23219f2b9a223a3fb2923de84c1a6a9a4f592e1bf3fc008e0727a7",
+      "notes_preserved": true,
+      "receipt": {
+        "schema": 1,
+        "kind": "verification_receipt",
+        "started_at": "2026-09-19T15:15:13.277634+00:00",
+        "status": "failed",
+        "plan_sha256": "2a78aa759b23219f2b9a223a3fb2923de84c1a6a9a4f592e1bf3fc008e0727a7",
+        "checks": [
+          {
+            "name": "unit",
+            "status": "passed",
+            "exit_code": 0,
+            "seconds": 0.02,
+            "error_type": null,
+            "output_bytes": 8,
+            "output_sha256": "a7b0d87f09eda291afc9252bdea96cbb2181a0d5c1a1a77c8ade3842437999ec"
+          },
+          {
+            "name": "lint",
+            "status": "failed",
+            "exit_code": 3,
+            "seconds": 0.021,
+            "error_type": null,
+            "output_bytes": 0,
+            "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ],
+        "plan_unchanged": true,
+        "protected_before_checks": [
+          {
+            "path": "notes.md",
+            "status": "unchanged"
+          }
+        ],
+        "protected_after_checks": [
+          {
+            "path": "notes.md",
+            "status": "unchanged"
+          }
+        ]
+      }
+    },
+    {
+      "case": "unrelated edit before checks",
+      "condition": "plain shell sequence",
+      "expected": "failed",
+      "observed": "passed",
+      "exit_code": 0,
+      "false_green": true,
+      "plan_sha256": "f5c6a0da6332dc6a93dd77e0f96388f4c8c30cd39e939901167a34ec662c19d5",
+      "notes_preserved": false,
+      "receipt": null
+    },
+    {
+      "case": "unrelated edit before checks",
+      "condition": "receipt runner",
+      "expected": "failed",
+      "observed": "failed",
+      "exit_code": 1,
+      "false_green": false,
+      "plan_sha256": "f5c6a0da6332dc6a93dd77e0f96388f4c8c30cd39e939901167a34ec662c19d5",
+      "notes_preserved": false,
+      "receipt": {
+        "schema": 1,
+        "kind": "verification_receipt",
+        "started_at": "2026-09-19T15:15:13.475859+00:00",
+        "status": "failed",
+        "plan_sha256": "f5c6a0da6332dc6a93dd77e0f96388f4c8c30cd39e939901167a34ec662c19d5",
+        "checks": [
+          {
+            "name": "unit",
+            "status": "passed",
+            "exit_code": 0,
+            "seconds": 0.022,
+            "error_type": null,
+            "output_bytes": 8,
+            "output_sha256": "a7b0d87f09eda291afc9252bdea96cbb2181a0d5c1a1a77c8ade3842437999ec"
+          },
+          {
+            "name": "lint",
+            "status": "passed",
+            "exit_code": 0,
+            "seconds": 0.021,
+            "error_type": null,
+            "output_bytes": 8,
+            "output_sha256": "1033b53b7c1704168c45b722ef1b02259048e7f3f4a7d442e391ca7bc022f2e7"
+          }
+        ],
+        "plan_unchanged": true,
+        "protected_before_checks": [
+          {
+            "path": "notes.md",
+            "status": "changed"
+          }
+        ],
+        "protected_after_checks": [
+          {
+            "path": "notes.md",
+            "status": "changed"
+          }
+        ]
+      }
+    },
+    {
+      "case": "check changes protected file",
+      "condition": "plain shell sequence",
+      "expected": "failed",
+      "observed": "passed",
+      "exit_code": 0,
+      "false_green": true,
+      "plan_sha256": "50f21dfdcc4df64859521da8882865363596c4040a876f4d1a31ba99f54ace9a",
+      "notes_preserved": false,
+      "receipt": null
+    },
+    {
+      "case": "check changes protected file",
+      "condition": "receipt runner",
+      "expected": "failed",
+      "observed": "failed",
+      "exit_code": 1,
+      "false_green": false,
+      "plan_sha256": "50f21dfdcc4df64859521da8882865363596c4040a876f4d1a31ba99f54ace9a",
+      "notes_preserved": false,
+      "receipt": {
+        "schema": 1,
+        "kind": "verification_receipt",
+        "started_at": "2026-09-19T15:15:13.682811+00:00",
+        "status": "failed",
+        "plan_sha256": "50f21dfdcc4df64859521da8882865363596c4040a876f4d1a31ba99f54ace9a",
+        "checks": [
+          {
+            "name": "unit",
+            "status": "passed",
+            "exit_code": 0,
+            "seconds": 0.041,
+            "error_type": null,
+            "output_bytes": 0,
+            "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "lint",
+            "status": "passed",
+            "exit_code": 0,
+            "seconds": 0.021,
+            "error_type": null,
+            "output_bytes": 8,
+            "output_sha256": "1033b53b7c1704168c45b722ef1b02259048e7f3f4a7d442e391ca7bc022f2e7"
+          }
+        ],
+        "plan_unchanged": true,
+        "protected_before_checks": [
+          {
+            "path": "notes.md",
+            "status": "unchanged"
+          }
+        ],
+        "protected_after_checks": [
+          {
+            "path": "notes.md",
+            "status": "changed"
+          }
+        ]
+      }
+    }
+  ]
+}

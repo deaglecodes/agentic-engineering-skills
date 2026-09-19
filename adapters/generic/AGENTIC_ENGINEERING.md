@@ -38,3 +38,7 @@ Remove the copied instruction file and any copied `skills/`, hook settings, or p
 ## Limitations
 
 Generic agents may not support hooks, skills, or structured stop gates. In that case, run the scripts manually and keep the final verification summary in the conversation.
+
+## Optional Verification Receipts
+
+For several checks or unrelated files that must stay unchanged, use `ae-verification-loop` and `./scripts/verify.sh`. Take the protected-file snapshot before edits; run the check plan after implementation. A receipt records results and detected changes, not proof that the chosen tests cover everything.
