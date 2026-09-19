@@ -1,0 +1,13 @@
+test_failed_replace_preserves_destination_and_cleans_temp (test_app.VisibleTests.test_failed_replace_preserves_destination_and_cleans_temp) ... ok
+test_missing_parent_is_not_created (test_app.VisibleTests.test_missing_parent_is_not_created) ... ok
+test_new_file (test_app.VisibleTests.test_new_file) ... ok
+test_preserves_permission_bits (test_app.VisibleTests.test_preserves_permission_bits) ... ok
+test_recursive_merge_and_replacement_without_mutating_patch (test_app.VisibleTests.test_recursive_merge_and_replacement_without_mutating_patch) ... ok
+test_rejects_non_object_roots_and_patches (test_app.VisibleTests.test_rejects_non_object_roots_and_patches) ... ok
+test_retains_other_top_level_keys (test_app.VisibleTests.test_retains_other_top_level_keys) ... ok
+test_serialization_failure_preserves_destination (test_app.VisibleTests.test_serialization_failure_preserves_destination) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.013s
+
+OK

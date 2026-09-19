@@ -1,76 +1,76 @@
-# Installation Notes
+# Install Into a Project
 
-Use one adapter per target project. Copy skills only when the agent supports reusable skill folders.
-
-## Codex
+Run these commands from a checkout of Agentic Engineering Skills. The installer requires Python 3.9+ and an existing target directory. Paths containing spaces should be quoted.
 
 ```sh
-cp adapters/codex/AGENTS.md /path/to/project/AGENTS.md
+./scripts/install.sh --agent codex --target "/path/to/my project" --dry-run
+./scripts/install.sh --agent codex --target "/path/to/my project"
 ```
 
-Smoke test:
+Choose one adapter per project:
+
+| Adapter | Project instruction file |
+| --- | --- |
+| `codex` | `AGENTS.md` |
+| `claude` | `CLAUDE.md` |
+| `cursor` | `.cursor/rules/agentic-engineering.mdc` |
+| `generic` | `AGENTIC_ENGINEERING.md` |
+
+For Codex, Claude, and generic agents, the installer appends a marked section while preserving existing bytes. For Cursor it creates a dedicated rule and refuses to replace an existing file with that name. Existing unrelated Cursor rules stay in place.
+
+The public pack is copied into `.agentic-engineering/pack/`; the manifest at `.agentic-engineering/install.json` records its files and the generated instruction section. The manifest does not copy your original instructions. Scripts in the installed adapter point to their actual location in the project.
+
+Evaluation runners, task corpora, reference repairs, and recorded results remain in the source repository and are not included in installations. The verification receipt tool is included under `.agentic-engineering/pack/scripts/verify.sh`; see the [receipt guide](verification-receipts.md).
+
+This installs local skill reference files, not native slash commands or a registered plugin. The adapter tells the agent which `SKILL.md` files to read. Hooks and package-manager settings are separate, optional steps. No global configuration is changed.
+
+Start a new agent session so the project instructions are loaded. For a generic agent, explicitly point it at `AGENTIC_ENGINEERING.md`. Try:
 
 ```text
-Use the Agentic Engineering workflow. Inspect this repo, propose a tiny safe docs improvement, make it, verify it, review the diff, and summarize checks.
+Use the Agentic Engineering workflow. Inspect this repo, make one small useful improvement, verify it, review the diff, and summarize the evidence.
 ```
 
-Uninstall by removing the copied `AGENTS.md` or merging out the Agentic Engineering section.
+## Reinstall or Change Adapters
 
-## Claude Code
+Repeating the same installation is a no-op. To use a newer pack or a different adapter, uninstall the current copy, then install again. The installer refuses symlinked managed paths, an unrecognized existing pack directory, or a modified installation.
+
+## Remove
+
+From the source checkout:
 
 ```sh
-cp adapters/claude/CLAUDE.md /path/to/project/CLAUDE.md
+./scripts/install.sh --target "/path/to/my project" --uninstall --dry-run
+./scripts/install.sh --target "/path/to/my project" --uninstall
 ```
 
-For plugin-style packaging, use `.claude-plugin/plugin.json` with the packaged skills. Hook examples are separate because Claude Code hooks are configured through settings files.
+Removal deletes only the unchanged managed pack and its generated instruction section. Additions outside that section are preserved. A pre-existing instruction file, including an empty one, is kept. If you changed the managed section or added/changed files inside the pack, removal stops without changing anything; preserve your edits and remove the installation manually or restore the managed files before retrying. Separate package-safety files remain in place.
 
-## Cursor
+Review the target project's diff before committing the installation. Keep the manifest with the pack if committing it so another checkout can remove it safely. Installing the pack is not proof that an agent followed it.
+
+## Optional Package Safety
+
+From the **target project**, inspect the current configuration:
 
 ```sh
-mkdir -p /path/to/project/.cursor/rules
-cp adapters/cursor/.cursor/rules/agentic-engineering.mdc /path/to/project/.cursor/rules/
+./.agentic-engineering/pack/scripts/check-package-age-safety.sh --scope=all --target .
 ```
 
-Uninstall by deleting `.cursor/rules/agentic-engineering.mdc`.
-
-## Generic Agents
+To add project-local settings after reviewing the preview:
 
 ```sh
-cp adapters/generic/AGENTIC_ENGINEERING.md /path/to/project/AGENTIC_ENGINEERING.md
+./.agentic-engineering/pack/scripts/setup-package-age-safety.sh --mode=project-local --target . --dry-run
+./.agentic-engineering/pack/scripts/setup-package-age-safety.sh --mode=project-local --target .
 ```
 
-Paste or link that file into the agent's instruction mechanism.
+The pip template is active only when selected through `PIP_CONFIG_FILE=.agentic-engineering/package-safety/pip.conf`, `PIP_UPLOADED_PRIOR_TO=P7D`, or user/site pip configuration. Read [package safety](package-age-safety.md) for supported managers and the separate, explicitly confirmed user-wide setup.
 
-## Package Safety
+## Optional Hooks
 
-Read-only audit:
+See the [Claude guide](claude.md) before merging settings into an existing configuration. The installer does not enable hooks. From the target project you can run the generic checks manually:
 
 ```sh
-./scripts/check-package-age-safety.sh --scope=all
+./.agentic-engineering/pack/hooks/verify-before-finish.sh
+./.agentic-engineering/pack/hooks/block-risky-package-install.sh npm .
 ```
 
-Project-local setup:
-
-```sh
-./scripts/setup-package-age-safety.sh --mode=project-local --target /path/to/project
-```
-
-Project-local setup does not create backup copies of existing package-manager files, because those files can contain private registry tokens. For pip, use the generated template through `PIP_CONFIG_FILE=.agentic-engineering/package-safety/pip.conf`, set `PIP_UPLOADED_PRIOR_TO=P7D`, or rely on user/site pip config.
-
-User-wide setup is opt-in:
-
-```sh
-./scripts/setup-package-age-safety.sh --mode=user-wide --dry-run
-./scripts/setup-package-age-safety.sh --mode=user-wide --confirm-user-wide
-```
-
-If user-wide setup creates backups, the script prints a restore command. Do not paste private package-manager config contents into issues or pull requests.
-
-## Hooks
-
-Optional hooks live in `hooks/` and `hooks/claude/`. Run them manually or wire them into an agent hook system:
-
-```sh
-./hooks/verify-before-finish.sh
-./hooks/block-risky-package-install.sh npm /path/to/project
-```
+Use your application's own tests and runtime checks to validate application changes. The pack's validation script validates the pack itself.

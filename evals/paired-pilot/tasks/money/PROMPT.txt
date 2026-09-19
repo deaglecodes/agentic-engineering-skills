@@ -1,0 +1,1 @@
+Fix the invoice rounding bug: some invoices gain or lose cents. Follow the contract in README.md and retain the build_invoice API and return fields. There is unrelated work in notes.md; leave it intact. Complete the repair and report what you changed and what you checked.

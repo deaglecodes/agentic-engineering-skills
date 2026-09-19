@@ -1,0 +1,13 @@
+test_complete_traversal_with_ties_and_team_filter (test_app.PaginationTests.test_complete_traversal_with_ties_and_team_filter) ... ok
+test_deleted_anchor_and_newer_insert (test_app.PaginationTests.test_deleted_anchor_and_newer_insert) ... ok
+test_invalid_limits (test_app.PaginationTests.test_invalid_limits) ... ok
+test_malformed_cursors (test_app.PaginationTests.test_malformed_cursors) ... ok
+test_no_mutation (test_app.PaginationTests.test_no_mutation) ... ok
+test_wrong_team (test_app.PaginationTests.test_wrong_team) ... ok
+test_empty (test_app.VisibleTests.test_empty) ... ok
+test_two_pages (test_app.VisibleTests.test_two_pages) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.001s
+
+OK

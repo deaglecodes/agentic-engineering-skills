@@ -1,0 +1,113 @@
+{
+  "purpose": "Separate post-run replay of published source and agent-authored tests; does not alter frozen trial scores or timing.",
+  "runs": [
+    {
+      "run": "money-1-without-pack",
+      "agent_test_command_recorded": true,
+      "postrun_agent_tests_pass": true,
+      "postrun_agent_test_count": 11,
+      "published_source_heldout_passed": 8,
+      "published_source_heldout_total": 8,
+      "score_matches_original": true
+    },
+    {
+      "run": "money-1-with-pack",
+      "agent_test_command_recorded": true,
+      "postrun_agent_tests_pass": true,
+      "postrun_agent_test_count": 10,
+      "published_source_heldout_passed": 8,
+      "published_source_heldout_total": 8,
+      "score_matches_original": true
+    },
+    {
+      "run": "money-2-with-pack",
+      "agent_test_command_recorded": true,
+      "postrun_agent_tests_pass": true,
+      "postrun_agent_test_count": 11,
+      "published_source_heldout_passed": 8,
+      "published_source_heldout_total": 8,
+      "score_matches_original": true
+    },
+    {
+      "run": "money-2-without-pack",
+      "agent_test_command_recorded": true,
+      "postrun_agent_tests_pass": true,
+      "postrun_agent_test_count": 11,
+      "published_source_heldout_passed": 8,
+      "published_source_heldout_total": 8,
+      "score_matches_original": true
+    },
+    {
+      "run": "pagination-1-without-pack",
+      "agent_test_command_recorded": true,
+      "postrun_agent_tests_pass": true,
+      "postrun_agent_test_count": 7,
+      "published_source_heldout_passed": 8,
+      "published_source_heldout_total": 8,
+      "score_matches_original": true
+    },
+    {
+      "run": "pagination-1-with-pack",
+      "agent_test_command_recorded": true,
+      "postrun_agent_tests_pass": true,
+      "postrun_agent_test_count": 7,
+      "published_source_heldout_passed": 8,
+      "published_source_heldout_total": 8,
+      "score_matches_original": true
+    },
+    {
+      "run": "pagination-2-with-pack",
+      "agent_test_command_recorded": true,
+      "postrun_agent_tests_pass": true,
+      "postrun_agent_test_count": 8,
+      "published_source_heldout_passed": 8,
+      "published_source_heldout_total": 8,
+      "score_matches_original": true
+    },
+    {
+      "run": "pagination-2-without-pack",
+      "agent_test_command_recorded": true,
+      "postrun_agent_tests_pass": true,
+      "postrun_agent_test_count": 7,
+      "published_source_heldout_passed": 8,
+      "published_source_heldout_total": 8,
+      "score_matches_original": true
+    },
+    {
+      "run": "settings-1-without-pack",
+      "agent_test_command_recorded": true,
+      "postrun_agent_tests_pass": true,
+      "postrun_agent_test_count": 8,
+      "published_source_heldout_passed": 8,
+      "published_source_heldout_total": 8,
+      "score_matches_original": true
+    },
+    {
+      "run": "settings-1-with-pack",
+      "agent_test_command_recorded": true,
+      "postrun_agent_tests_pass": true,
+      "postrun_agent_test_count": 11,
+      "published_source_heldout_passed": 8,
+      "published_source_heldout_total": 8,
+      "score_matches_original": true
+    },
+    {
+      "run": "settings-2-with-pack",
+      "agent_test_command_recorded": true,
+      "postrun_agent_tests_pass": true,
+      "postrun_agent_test_count": 10,
+      "published_source_heldout_passed": 8,
+      "published_source_heldout_total": 8,
+      "score_matches_original": true
+    },
+    {
+      "run": "settings-2-without-pack",
+      "agent_test_command_recorded": true,
+      "postrun_agent_tests_pass": true,
+      "postrun_agent_test_count": 8,
+      "published_source_heldout_passed": 8,
+      "published_source_heldout_total": 8,
+      "score_matches_original": true
+    }
+  ]
+}

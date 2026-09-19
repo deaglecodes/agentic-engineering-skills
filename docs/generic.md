@@ -5,14 +5,15 @@ Use `adapters/generic/AGENTIC_ENGINEERING.md` when an AI coding tool supports a 
 ## Install
 
 ```sh
-cp adapters/generic/AGENTIC_ENGINEERING.md /path/to/project/AGENTIC_ENGINEERING.md
+./scripts/install.sh --agent generic --target /path/to/project --dry-run
+./scripts/install.sh --agent generic --target /path/to/project
 ```
 
 Then point the agent at that file, paste it into the agent's custom instructions, or merge it into the project instruction file the agent already reads.
 
 ## Uninstall
 
-Remove the copied file or delete the Agentic Engineering section from the target agent's instructions.
+Run `./scripts/install.sh --target /path/to/project --uninstall` from the source checkout. Preview with `--dry-run`. Modified managed files are preserved by refusing removal. See [installation details](install.md).
 
 ## Smoke-Test Prompt
 
@@ -22,4 +23,8 @@ Use the Agentic Engineering workflow. Inspect this repo, make one low-risk docs 
 
 ## Limitations
 
-Generic agents may not support reusable skills, hooks, stop gates, or structured plans. In that case, run `scripts/validate-repo.sh`, `hooks/verify-before-finish.sh`, and package-safety checks manually.
+Generic agents may not support reusable skills, hooks, stop gates, or structured plans. The installed adapter links to skill files for the agent to read. Run the target application's checks and the optional scripts under `.agentic-engineering/pack/` manually; validating the pack itself does not validate the application.
+
+## Verification Receipts
+
+The installed `./.agentic-engineering/pack/scripts/verify.sh` records individual check results and compares explicitly protected files against a snapshot taken before edits. It works independently of agent hooks. See [the plan format and commands](verification-receipts.md); a single direct check may be enough for small tasks.

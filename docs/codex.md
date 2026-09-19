@@ -5,14 +5,15 @@ Codex reads `AGENTS.md` files as local operating instructions. This repo provide
 ## Install
 
 ```sh
-cp adapters/codex/AGENTS.md /path/to/project/AGENTS.md
+./scripts/install.sh --agent codex --target /path/to/project --dry-run
+./scripts/install.sh --agent codex --target /path/to/project
 ```
 
-Optional: copy selected `skills/*` folders into your Codex skills directory if your runtime supports local skills.
+The installer appends a managed section to existing instructions and includes local skill references under `.agentic-engineering/pack/skills/`. It does not register native slash commands. Start a new session after installation.
 
 ## Uninstall
 
-Remove the copied `AGENTS.md`, or merge out the Agentic Engineering section if the project already had instructions.
+Run `./scripts/install.sh --target /path/to/project --uninstall` from the source checkout. Preview with `--dry-run`. Modified managed files are preserved by refusing removal. See [installation details](install.md).
 
 ## Prompt Examples
 
@@ -65,3 +66,7 @@ The expected behavior is: inspect first, edit narrowly, run a relevant check, re
 ## Limitations
 
 Codex behavior depends on the active runtime instructions and available tools. Hooks in this repo are examples; Codex will not automatically use Claude Code hook settings.
+
+## Verification Receipts
+
+The installed `./.agentic-engineering/pack/scripts/verify.sh` records individual check results and compares explicitly protected files against a snapshot taken before edits. It works independently of agent hooks. See [the plan format and commands](verification-receipts.md); a single direct check may be enough for small tasks.

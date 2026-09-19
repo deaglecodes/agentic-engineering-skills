@@ -1,0 +1,15 @@
+test_atomic_replacement_and_permissions (test_app.ContractTests.test_atomic_replacement_and_permissions) ... ok
+test_invalid_existing_json_is_preserved (test_app.ContractTests.test_invalid_existing_json_is_preserved) ... ok
+test_invalid_patches_leave_destination_unchanged (test_app.ContractTests.test_invalid_patches_leave_destination_unchanged) ... ok
+test_missing_parent_is_not_created (test_app.ContractTests.test_missing_parent_is_not_created) ... ok
+test_recursive_merge_and_replacement_values (test_app.ContractTests.test_recursive_merge_and_replacement_values) ... ok
+test_rejects_non_object_roots (test_app.ContractTests.test_rejects_non_object_roots) ... ok
+test_replacement_failure_cleans_up (test_app.ContractTests.test_replacement_failure_cleans_up) ... ok
+test_write_failure_cleans_up (test_app.ContractTests.test_write_failure_cleans_up) ... ok
+test_new_file (test_app.VisibleTests.test_new_file) ... ok
+test_retains_other_top_level_keys (test_app.VisibleTests.test_retains_other_top_level_keys) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.011s
+
+OK

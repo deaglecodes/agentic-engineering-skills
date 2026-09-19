@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+- Added verification receipts: explicit per-command results and timeouts, snapshots of protected files, plan identity checks, and private-by-default JSON evidence. Added 15 behavior tests and a five-case mechanism demo with both controls and all outcomes published.
+- Updated the verification skill and all adapters to route to the optional runner, and presented the executable feature alongside the unchanged model-pilot findings.
+- Added a reproducible paired coding pilot with three authored tasks, frozen external graders, two repetitions per condition, and public results: all six runs passed in each condition, with higher observed time and token usage for the pack.
+- Added grader self-checks to repository validation without model calls, and kept evaluation tasks, answers, and transcripts out of project installations.
+- Added a project-local installer for Codex, Claude Code, Cursor, and generic agents, with a preview, preserved existing instructions, working local tool paths, repeat-install detection, and removal that refuses modified managed files.
+- Added installer fixtures for all four adapters, real installed-tool invocation, preservation of user edits, path conflicts, and symlink refusal.
+- Clarified the Karpathy inspiration and separated primary sources, third-party interpretations, and this repository's implementation choices.
+- Clarified that eval smoke checks validate prompt structure rather than model behavior.
 - Simplified the README so the project purpose, quickstart, package safety, hooks, and checks are easier to understand.
 - Added a clearer README USP section explaining the practical jump from loose AI coding to verified agentic engineering.
 - Removed the old v0.2 audit note from public docs because it was internal release history, not user-facing guidance.

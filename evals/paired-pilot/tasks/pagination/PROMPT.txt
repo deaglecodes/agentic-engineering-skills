@@ -1,0 +1,1 @@
+Fix pagination in the team activity feed: events are missing or duplicated when timestamps tie, and paging must still work if the previous page's last event is deleted. Follow README.md while retaining the list_events API. There is unrelated work in notes.md; leave it intact. Complete the repair and report what you changed and what you checked.

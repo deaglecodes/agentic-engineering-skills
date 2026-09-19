@@ -31,8 +31,25 @@ section "Secret scan"
 section "Fixture tests"
 ./scripts/test-fixtures.sh
 
+section "Python tool and installer tests"
+python3 -B -m unittest discover -s tests -p 'test_*.py'
+
 section "Eval smoke"
 ./scripts/run-evals-smoke.sh
+
+section "Paired pilot grader checks (no model calls)"
+if [ -f evals/paired-pilot/run.py ]; then
+  python3 -B evals/paired-pilot/run.py --check
+else
+  printf '%s\n' 'pilot corpus not bundled in installed packs; grader checks skipped'
+fi
+
+section "Verification receipt demo (no model calls)"
+if [ -f evals/verification-demo/run.py ]; then
+  python3 -B evals/verification-demo/run.py
+else
+  printf '%s\n' 'demo not bundled in installed packs; skipped'
+fi
 
 section "Executable permissions"
 bad_permissions="$(find . -path './.git' -prune -o -type f -perm -111 -print | grep -Ev '^\./(scripts|hooks)/.*\.sh$' || true)"

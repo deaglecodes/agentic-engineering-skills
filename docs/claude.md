@@ -5,10 +5,11 @@ Claude Code supports project instructions through `CLAUDE.md`, settings-driven h
 ## Per-Project Install
 
 ```sh
-cp adapters/claude/CLAUDE.md /path/to/project/CLAUDE.md
+./scripts/install.sh --agent claude --target /path/to/project --dry-run
+./scripts/install.sh --agent claude --target /path/to/project
 ```
 
-Uninstall by deleting the copied file or removing the Agentic Engineering section.
+Run `./scripts/install.sh --target /path/to/project --uninstall` from the source checkout. Preview with `--dry-run`. Modified managed files are preserved by refusing removal. See [installation details](install.md).
 
 ## Plugin-Style Packaging
 
@@ -63,3 +64,7 @@ Use the Agentic Engineering workflow. Inspect the repo, make one narrow docs imp
 ## Limitations
 
 Hooks inspect known command patterns; they cannot prove arbitrary shell commands are safe. Keep Claude Code permissions narrow and review dependency changes.
+
+## Verification Receipts
+
+The installed `./.agentic-engineering/pack/scripts/verify.sh` records individual check results and compares explicitly protected files against a snapshot taken before edits. It works independently of agent hooks. See [the plan format and commands](verification-receipts.md); a single direct check may be enough for small tasks.
