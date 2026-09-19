@@ -1,0 +1,15 @@
+test_decimal_inputs_are_not_mutated (test_app.VisibleTests.test_decimal_inputs_are_not_mutated) ... ok
+test_decimal_rounding_and_discounted_tax (test_app.VisibleTests.test_decimal_rounding_and_discounted_tax) ... ok
+test_discount_limit_applies_after_rounding (test_app.VisibleTests.test_discount_limit_applies_after_rounding) ... ok
+test_empty (test_app.VisibleTests.test_empty) ... ok
+test_invalid_decimal_values (test_app.VisibleTests.test_invalid_decimal_values) ... ok
+test_invalid_quantities_and_lines (test_app.VisibleTests.test_invalid_quantities_and_lines) ... ok
+test_large_values_and_low_caller_precision (test_app.VisibleTests.test_large_values_and_low_caller_precision) ... ok
+test_negative_zero_is_formatted_as_zero (test_app.VisibleTests.test_negative_zero_is_formatted_as_zero) ... ok
+test_round_each_extended_line_half_up (test_app.VisibleTests.test_round_each_extended_line_half_up) ... ok
+test_whole_dollars (test_app.VisibleTests.test_whole_dollars) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.001s
+
+OK

@@ -9,3 +9,7 @@ Run structural checks:
 ```
 
 Use them manually by pasting a prompt into an agent with the relevant adapter installed, then compare behavior against the expected behavior and pass criteria.
+
+## Runnable comparison
+
+The [paired coding pilot](paired-pilot/README.md) compares the same coding agent with and without the installed pack on three runnable bug-fix tasks, with frozen external graders and two repetitions per condition. The task fixtures are authored examples, not sampled production issues. Its grader self-checks run in repository validation without making model calls; launching the full pilot is a separate explicit command.

@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Added a reproducible paired coding pilot with three authored tasks, frozen external graders, two repetitions per condition, and public results: all six runs passed in each condition, with higher observed time and token usage for the pack.
+- Added grader self-checks to repository validation without model calls, and kept evaluation tasks, answers, and transcripts out of project installations.
 - Added a project-local installer for Codex, Claude Code, Cursor, and generic agents, with a preview, preserved existing instructions, working local tool paths, repeat-install detection, and removal that refuses modified managed files.
 - Added installer fixtures for all four adapters, real installed-tool invocation, preservation of user edits, path conflicts, and symlink refusal.
 - Clarified the Karpathy inspiration and separated primary sources, third-party interpretations, and this repository's implementation choices.

@@ -1,0 +1,126 @@
+diff --git a/app.py b/app.py
+index f1d4f23..ed85976 100644
+--- a/app.py
++++ b/app.py
+@@ -2,0 +3 @@ import base64
++import binascii
+@@ -3,0 +5,20 @@ import json
++from datetime import datetime, timedelta
++
++
++def _decode_cursor(cursor, team):
++    try:
++        if not isinstance(cursor, str):
++            raise ValueError
++        payload = json.loads(base64.b64decode(cursor.encode("ascii"), altchars=b"-_", validate=True))
++        if not isinstance(payload, dict) or set(payload) != {"team", "created_at", "id"}:
++            raise ValueError
++        if not all(isinstance(value, str) for value in payload.values()):
++            raise ValueError
++        if payload["team"] != team:
++            raise ValueError
++        stamp = datetime.fromisoformat(payload["created_at"].replace("Z", "+00:00"))
++        if stamp.utcoffset() != timedelta(0):
++            raise ValueError
++        return payload["created_at"], payload["id"]
++    except (ValueError, TypeError, UnicodeError, binascii.Error) as exc:
++        raise ValueError("Invalid cursor for this team") from exc
+@@ -7,4 +28,10 @@ def list_events(events, team, limit=2, cursor=None):
+-    rows = sorted([e for e in events if e["team"] == team], key=lambda e: e["created_at"], reverse=True)
+-    if cursor:
+-        stamp = json.loads(base64.urlsafe_b64decode(cursor.encode()))["created_at"]
+-        rows = [e for e in rows if e["created_at"] < stamp]
++    if isinstance(limit, bool) or not isinstance(limit, int) or not 1 <= limit <= 100:
++        raise ValueError("Limit must be an integer from 1 through 100")
++    anchor = _decode_cursor(cursor, team) if cursor is not None else None
++    rows = sorted(
++        [e for e in events if e["team"] == team],
++        key=lambda e: (e["created_at"], e["id"]),
++        reverse=True,
++    )
++    if anchor is not None:
++        rows = [e for e in rows if (e["created_at"], e["id"]) < anchor]
+@@ -14 +41,5 @@ def list_events(events, team, limit=2, cursor=None):
+-        next_cursor = base64.urlsafe_b64encode(json.dumps({"created_at": page[-1]["created_at"]}).encode()).decode()
++        next_cursor = base64.urlsafe_b64encode(json.dumps({
++            "team": team,
++            "created_at": page[-1]["created_at"],
++            "id": page[-1]["id"],
++        }).encode()).decode()
+diff --git a/test_app.py b/test_app.py
+index cd058ed..7b54e79 100644
+--- a/test_app.py
++++ b/test_app.py
+@@ -1,0 +2,3 @@ import unittest
++import base64
++import copy
++import json
+@@ -13,0 +17,68 @@ class VisibleTests(unittest.TestCase):
++
++    def test_ties_across_pages_are_lexicographic_and_do_not_mutate(self):
++        rows = [
++            {"id": id_, "team": "A", "created_at": "2026-01-02T00:00:00Z"}
++            for id_ in ["2", "10", "a", "9", "b"]
++        ]
++        rows.extend([
++            {"id": "other", "team": "B", "created_at": "2026-01-03T00:00:00Z"},
++            {"id": "old", "team": "A", "created_at": "2026-01-01T00:00:00Z"},
++        ])
++        original = copy.deepcopy(rows)
++        for limit in [1, 2, 3, 100]:
++            with self.subTest(limit=limit):
++                cursor = None
++                ids = []
++                for _ in range(len(rows) + 1):
++                    page = list_events(rows, "A", limit, cursor)
++                    ids.extend(row["id"] for row in page["items"])
++                    cursor = page["next_cursor"]
++                    if cursor is None:
++                        break
++                else:
++                    self.fail("Pagination did not terminate")
++                self.assertEqual(ids, ["b", "a", "9", "2", "10", "old"])
++                self.assertEqual(rows, original)
++
++    def test_deleted_anchor_and_reordered_input(self):
++        rows = [
++            {"id": id_, "team": "A", "created_at": "2026-01-02T00:00:00Z"}
++            for id_ in ["a", "b", "c", "d"]
++        ]
++        first = list_events(rows, "A")
++        self.assertEqual([row["id"] for row in first["items"]], ["d", "c"])
++        remaining = [row for row in reversed(rows) if row["id"] != "c"]
++        second = list_events(remaining, "A", cursor=first["next_cursor"])
++        self.assertEqual([row["id"] for row in second["items"]], ["b", "a"])
++        self.assertIsNone(second["next_cursor"])
++        self.assertEqual(list_events([], "A", cursor=first["next_cursor"]),
++                         {"items": [], "next_cursor": None})
++
++    def test_invalid_limits(self):
++        for limit in [True, False, 0, -1, 101, 2.0, "2", None, [], {}]:
++            with self.subTest(limit=limit), self.assertRaises(ValueError):
++                list_events([], "A", limit=limit)
++
++    def test_invalid_cursors(self):
++        def encode(payload):
++            return base64.urlsafe_b64encode(json.dumps(payload).encode()).decode()
++
++        valid = {"team": "A", "created_at": "2026-01-02T00:00:00Z", "id": "a"}
++        malformed = ["", "!", "é", "a", 123, False, b"abc", [], {},
++                     encode(None), encode([]), encode({}),
++                     encode({"created_at": valid["created_at"]}),
++                     encode(dict(valid, team="B")), encode(dict(valid, id=1)),
++                     encode(dict(valid, created_at="invalid")),
++                     encode(dict(valid, created_at="2026-01-02")),
++                     encode(dict(valid, extra=True)), encode(valid) + "!"]
++        for cursor in malformed:
++            with self.subTest(cursor=cursor), self.assertRaises(ValueError):
++                list_events([], "A", cursor=cursor)
++
++    def test_cursor_only_when_matching_events_remain(self):
++        rows = [
++            {"id": "a", "team": "A", "created_at": "2026-01-02T00:00:00Z"},
++            {"id": "b", "team": "B", "created_at": "2026-01-01T00:00:00Z"},
++        ]
++        self.assertIsNone(list_events(rows, "A", limit=1)["next_cursor"])
++        self.assertEqual(list_events(rows, "C"), {"items": [], "next_cursor": None})

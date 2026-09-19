@@ -1,0 +1,13 @@
+test_atomic_replacement_preserves_permissions (test_app.VisibleTests.test_atomic_replacement_preserves_permissions) ... ok
+test_invalid_roots_leave_destination_unchanged (test_app.VisibleTests.test_invalid_roots_leave_destination_unchanged) ... ok
+test_missing_parent_is_not_created (test_app.VisibleTests.test_missing_parent_is_not_created) ... ok
+test_new_file (test_app.VisibleTests.test_new_file) ... ok
+test_recursive_merge_and_replacement_without_mutating_patch (test_app.VisibleTests.test_recursive_merge_and_replacement_without_mutating_patch) ... ok
+test_replacement_failure_cleans_temporary_file (test_app.VisibleTests.test_replacement_failure_cleans_temporary_file) ... ok
+test_retains_other_top_level_keys (test_app.VisibleTests.test_retains_other_top_level_keys) ... ok
+test_serialization_failures_preserve_destination (test_app.VisibleTests.test_serialization_failures_preserve_destination) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.010s
+
+OK

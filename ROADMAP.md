@@ -12,8 +12,8 @@
 ## v0.3 Candidates
 
 - Implemented: project-local adapter installation and safe removal, with preview and preservation fixtures.
-- Next: evaluate the installed workflow on a small set of real coding tasks, reporting the model, task, checks, and failures; structural tests alone do not measure agent quality.
-- Add machine-readable eval results once a stable runner exists.
+- Completed: [paired pilot and machine-readable results](evals/paired-pilot/results/2026-09-19/report.md) on three authored coding exercises; both conditions passed every run, with higher time and token usage for the pack.
+- Next: freeze independent repository issues and compare conditions on harder scope, dependency, and verification decisions. The current pilot does not establish a model-quality advantage.
 - Add more ecosystem-specific dependency safety recipes.
 - Add adapter sync tests to detect drift between skills and instructions.
 - Add optional GitHub release workflow after maintainer review.

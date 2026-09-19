@@ -1,0 +1,127 @@
+diff --git a/app.py b/app.py
+index 76fa0cb..6d4202e 100644
+--- a/app.py
++++ b/app.py
+@@ -2,0 +3,14 @@
++from decimal import Decimal, InvalidOperation, ROUND_HALF_UP, localcontext
++
++
++def _decimal(value):
++    if isinstance(value, bool) or not isinstance(value, (str, Decimal, int)):
++        raise ValueError("Expected a decimal value")
++    try:
++        number = Decimal(value)
++    except InvalidOperation as error:
++        raise ValueError("Expected a decimal value") from error
++    if not number.is_finite() or number < 0:
++        raise ValueError("Values must be finite and nonnegative")
++    return number.copy_abs()
++
+@@ -5,6 +19,31 @@ def build_invoice(lines, discount="0", tax_rate="0"):
+-    subtotal = round(sum(float(line["unit_price"]) * line["quantity"] for line in lines), 2)
+-    discount = float(discount)
+-    taxable = max(0, subtotal - discount)
+-    tax = round(taxable * float(tax_rate), 2)
+-    return {"subtotal": f"{subtotal:.2f}", "discount": f"{discount:.2f}",
+-            "tax": f"{tax:.2f}", "total": f"{taxable + tax:.2f}"}
++    discount = _decimal(discount)
++    tax_rate = _decimal(tax_rate)
++    items = []
++    try:
++        for line in lines:
++            price, quantity = line["unit_price"], line["quantity"]
++            if not isinstance(price, (str, Decimal)):
++                raise ValueError("Unit prices must be decimal strings or Decimal values")
++            if isinstance(quantity, bool) or not isinstance(quantity, int) or quantity <= 0:
++                raise ValueError("Quantities must be positive integers")
++            items.append((_decimal(price), Decimal(quantity)))
++    except (KeyError, TypeError) as error:
++        raise ValueError("Expected lines with unit_price and quantity") from error
++
++    # Allow exact intermediate arithmetic, including amounts beyond the default
++    # Decimal precision, independently of the caller's precision setting.
++    values = [discount, tax_rate] + [value for item in items for value in item]
++    precision = 10 + sum(len(value.as_tuple().digits) + abs(value.as_tuple().exponent)
++                         for value in values)
++    with localcontext() as context:
++        context.prec = max(28, precision)
++        cents = Decimal("0.01")
++        subtotal = sum(( (price * quantity).quantize(cents, rounding=ROUND_HALF_UP)
++                         for price, quantity in items), Decimal("0.00"))
++        discount = discount.quantize(cents, rounding=ROUND_HALF_UP)
++        if discount > subtotal:
++            raise ValueError("Discount must not exceed subtotal")
++        taxable = subtotal - discount
++        tax = (taxable * tax_rate).quantize(cents, rounding=ROUND_HALF_UP)
++        return {"subtotal": f"{subtotal:.2f}", "discount": f"{discount:.2f}",
++                "tax": f"{tax:.2f}", "total": f"{taxable + tax:.2f}"}
+diff --git a/test_app.py b/test_app.py
+index 7b45ae3..36dac2b 100644
+--- a/test_app.py
++++ b/test_app.py
+@@ -1,0 +2,2 @@ import unittest
++from copy import deepcopy
++from decimal import Decimal, localcontext
+@@ -11,0 +14,62 @@ class VisibleTests(unittest.TestCase):
++
++    def test_round_each_extended_line_half_up(self):
++        self.assertEqual(build_invoice([
++            {"unit_price": "0.005", "quantity": 1},
++            {"unit_price": "0.005", "quantity": 1},
++            {"unit_price": "0.004", "quantity": 3},
++        ]), {"subtotal": "0.03", "discount": "0.00", "tax": "0.00", "total": "0.03"})
++
++    def test_decimal_rounding_and_discounted_tax(self):
++        self.assertEqual(build_invoice([{"unit_price": "2.675", "quantity": 1}],
++                                       "0.175", "0.05"),
++                         {"subtotal": "2.68", "discount": "0.18",
++                          "tax": "0.13", "total": "2.63"})
++
++    def test_discount_limit_applies_after_rounding(self):
++        lines = [{"unit_price": "1", "quantity": 1}]
++        self.assertEqual(build_invoice(lines, "1.004")["total"], "0.00")
++        for discount in ("1.005", "2"):
++            with self.subTest(discount=discount), self.assertRaises(ValueError):
++                build_invoice(lines, discount)
++        with self.assertRaises(ValueError):
++            build_invoice([], "0.01")
++
++    def test_invalid_decimal_values(self):
++        for value in ("-0.001", "NaN", "sNaN", "Infinity", "-Infinity", "bad", "", None, True):
++            for field in ("unit_price", "discount", "tax_rate"):
++                with self.subTest(value=value, field=field), self.assertRaises(ValueError):
++                    line = {"unit_price": "10", "quantity": 1}
++                    kwargs = {}
++                    if field == "unit_price":
++                        line[field] = value
++                    else:
++                        kwargs[field] = value
++                    build_invoice([line], **kwargs)
++
++    def test_invalid_quantities_and_lines(self):
++        for quantity in (0, -1, True, False, "2", 1.5, Decimal("2"), None):
++            with self.subTest(quantity=quantity), self.assertRaises(ValueError):
++                build_invoice([{"unit_price": "1", "quantity": quantity}])
++        for lines in (None, [{}], [None], [{"unit_price": 1.25, "quantity": 1}]):
++            with self.subTest(lines=lines), self.assertRaises(ValueError):
++                build_invoice(lines)
++
++    def test_decimal_inputs_are_not_mutated(self):
++        lines = [{"unit_price": Decimal("1.005"), "quantity": 2}]
++        original = deepcopy(lines)
++        self.assertEqual(build_invoice(lines, Decimal("0.01"), Decimal("0.1")),
++                         {"subtotal": "2.01", "discount": "0.01",
++                          "tax": "0.20", "total": "2.20"})
++        self.assertEqual(lines, original)
++
++    def test_large_values_and_low_caller_precision(self):
++        with localcontext() as context:
++            context.prec = 6
++            self.assertEqual(build_invoice([
++                {"unit_price": "123456789012345678901234567890.125", "quantity": 2}
++            ])["total"], "246913578024691357802469135780.25")
++            self.assertEqual(context.prec, 6)
++
++    def test_negative_zero_is_formatted_as_zero(self):
++        self.assertEqual(build_invoice([{"unit_price": "-0", "quantity": 1}], "-0", "-0"),
++                         {"subtotal": "0.00", "discount": "0.00", "tax": "0.00", "total": "0.00"})

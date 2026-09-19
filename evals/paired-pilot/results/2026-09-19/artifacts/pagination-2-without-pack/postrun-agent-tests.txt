@@ -1,0 +1,12 @@
+test_cursor_only_when_matching_events_remain (test_app.VisibleTests.test_cursor_only_when_matching_events_remain) ... ok
+test_deleted_anchor_and_reordered_input (test_app.VisibleTests.test_deleted_anchor_and_reordered_input) ... ok
+test_empty (test_app.VisibleTests.test_empty) ... ok
+test_invalid_cursors (test_app.VisibleTests.test_invalid_cursors) ... ok
+test_invalid_limits (test_app.VisibleTests.test_invalid_limits) ... ok
+test_ties_across_pages_are_lexicographic_and_do_not_mutate (test_app.VisibleTests.test_ties_across_pages_are_lexicographic_and_do_not_mutate) ... ok
+test_two_pages (test_app.VisibleTests.test_two_pages) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.001s
+
+OK

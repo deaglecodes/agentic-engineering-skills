@@ -13,7 +13,13 @@ Current release: `0.2.0`.
 - **Review a change:** inspect the diff for unrelated edits, exposed private data, and missing checks.
 - **Check a dependency install:** use the optional scripts to check a 7-day package release-age policy.
 
-The pack supplies instructions and tools. Your coding agent performs the work; its results still need checking. The automated checks in this repository validate the pack and installer, not a measured improvement in model performance.
+The pack supplies instructions and tools. Your coding agent performs the work; its results still need checking. Repository checks validate the pack and installer. A separate model pilot measures behavior on a small, explicit task set.
+
+## Measured Pilot
+
+In a [12-run comparison](evals/paired-pilot/results/2026-09-19/report.md), GPT-6 Astra passed all six runs both with and without the pack. Median time was 101.64 seconds with the pack versus 85.89 seconds without it; reported input tokens were 1.54 times higher with the pack.
+
+These were three authored Python bug-fix exercises, each repeated twice per condition. The result shows no correctness advantage on this small suite. Broader model-quality benefits remain unproven. The [runner, frozen graders, and protocol](evals/paired-pilot/README.md) are available to reproduce or extend the evaluation.
 
 ## What You Get
 

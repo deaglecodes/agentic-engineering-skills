@@ -1,0 +1,12 @@
+test_cursor_cannot_cross_teams (test_app.VisibleTests.test_cursor_cannot_cross_teams) ... ok
+test_deleted_anchor (test_app.VisibleTests.test_deleted_anchor) ... ok
+test_empty (test_app.VisibleTests.test_empty) ... ok
+test_invalid_cursors (test_app.VisibleTests.test_invalid_cursors) ... ok
+test_invalid_limits (test_app.VisibleTests.test_invalid_limits) ... ok
+test_ties_across_pages_and_no_mutation (test_app.VisibleTests.test_ties_across_pages_and_no_mutation) ... ok
+test_two_pages (test_app.VisibleTests.test_two_pages) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.001s
+
+OK

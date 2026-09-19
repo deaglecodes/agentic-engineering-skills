@@ -2,6 +2,8 @@
 
 This is a small, transparent pilot of the installed pack's incremental effect on a coding agent. It uses authored, runnable Python projects with deliberately seeded bugs, not a sample of production issues. There is no model judge and no expected winner.
 
+[19 September 2026 results](results/2026-09-19/report.md): both conditions passed all six runs; the pack used more time and reported input tokens. The public evidence includes final code, patches, checks, and machine-readable run records.
+
 ## Frozen design
 
 - Three tasks: exact invoice rounding, stable team-event pagination, and safe nested settings updates.

@@ -56,6 +56,10 @@ def source_files():
     for directory in DIRECTORIES:
         for path in sorted((ROOT / directory).rglob("*")):
             relative = path.relative_to(ROOT)
+            # Evaluation tasks, answers, and transcripts belong in the source repo,
+            # not in every user's installed workflow or future evaluation workspace.
+            if relative.parts[:2] == ("evals", "paired-pilot"):
+                continue
             checked_path(ROOT, relative)
             if any(part.startswith(".") for part in path.relative_to(ROOT / directory).parts):
                 # Cursor's rule directory is intentionally part of the pack.

@@ -1,0 +1,16 @@
+test_decimal_inputs_and_no_mutation (test_app.RoundingContractTests.test_decimal_inputs_and_no_mutation) ... ok
+test_discount_and_tax_round_half_up (test_app.RoundingContractTests.test_discount_and_tax_round_half_up) ... ok
+test_discount_limit_uses_rounded_discount (test_app.RoundingContractTests.test_discount_limit_uses_rounded_discount) ... ok
+test_invalid_decimal_values (test_app.RoundingContractTests.test_invalid_decimal_values) ... ok
+test_invalid_quantities (test_app.RoundingContractTests.test_invalid_quantities) ... ok
+test_large_values_ignore_callers_precision (test_app.RoundingContractTests.test_large_values_ignore_callers_precision) ... ok
+test_malformed_lines (test_app.RoundingContractTests.test_malformed_lines) ... ok
+test_rounds_extended_lines_before_summing (test_app.RoundingContractTests.test_rounds_extended_lines_before_summing) ... ok
+test_signed_zero_and_empty_output (test_app.RoundingContractTests.test_signed_zero_and_empty_output) ... ok
+test_empty (test_app.VisibleTests.test_empty) ... ok
+test_whole_dollars (test_app.VisibleTests.test_whole_dollars) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 0.001s
+
+OK

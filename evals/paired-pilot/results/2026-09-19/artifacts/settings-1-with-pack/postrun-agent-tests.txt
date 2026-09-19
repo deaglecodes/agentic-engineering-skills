@@ -1,0 +1,16 @@
+test_malformed_json_is_preserved (test_app.ContractTests.test_malformed_json_is_preserved) ... ok
+test_missing_parent_is_not_created (test_app.ContractTests.test_missing_parent_is_not_created) ... ok
+test_preserves_permissions (test_app.ContractTests.test_preserves_permissions) ... ok
+test_recursive_merge_and_replacements (test_app.ContractTests.test_recursive_merge_and_replacements) ... ok
+test_rejects_non_object_patches (test_app.ContractTests.test_rejects_non_object_patches) ... ok
+test_rejects_non_object_roots (test_app.ContractTests.test_rejects_non_object_roots) ... ok
+test_replacement_failure_cleans_up (test_app.ContractTests.test_replacement_failure_cleans_up) ... ok
+test_serialization_failures_preserve_destination (test_app.ContractTests.test_serialization_failures_preserve_destination) ... ok
+test_write_failure_cleans_up (test_app.ContractTests.test_write_failure_cleans_up) ... ok
+test_new_file (test_app.VisibleTests.test_new_file) ... ok
+test_retains_other_top_level_keys (test_app.VisibleTests.test_retains_other_top_level_keys) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 0.010s
+
+OK
