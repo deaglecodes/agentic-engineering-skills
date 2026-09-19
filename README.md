@@ -40,7 +40,7 @@ The pack supplies instructions and tools. Your coding agent performs the work; i
 
 ## Measured Pilot
 
-In a [12-run comparison](evals/paired-pilot/results/2026-09-19/report.md), GPT-6 Astra passed all six runs both with and without the pack. Median time was 101.64 seconds with the pack versus 85.89 seconds without it; reported input tokens were 1.54 times higher with the pack.
+In a [12-run comparison](evals/paired-pilot/results/2026-09-19/report.md) before the receipt runner was added, GPT-6 Astra passed all six runs both with and without the pack. Median time was 101.64 seconds with the pack versus 85.89 seconds without it; reported input tokens were 1.54 times higher with the pack. The new runner was not part of that model trial.
 
 These were three authored Python bug-fix exercises, each repeated twice per condition. The result shows no correctness advantage on this small suite. Broader model-quality benefits remain unproven. The [runner, frozen graders, and protocol](evals/paired-pilot/README.md) are available to reproduce or extend the evaluation.
 
