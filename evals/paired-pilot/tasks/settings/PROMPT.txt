@@ -1,0 +1,1 @@
+Fix the settings updater: nested updates erase sibling settings, and a failed save can corrupt the existing file. Follow the contract in README.md and retain the update_settings API. There is unrelated work in notes.md; leave it intact. Complete the repair and report what you changed and what you checked.
