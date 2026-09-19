@@ -66,7 +66,15 @@ def freeze_pack(output):
             path = Path(member.name)
             if path.is_absolute() or ".." in path.parts or not (member.isfile() or member.isdir()):
                 raise ValueError("Unsupported archive entry")
-        tar.extractall(destination, filter="data")
+        for member in tar.getmembers():
+            path = destination / member.name
+            if member.isdir():
+                path.mkdir(parents=True, exist_ok=True)
+            else:
+                path.parent.mkdir(parents=True, exist_ok=True)
+                with tar.extractfile(member) as source, path.open("wb") as target:
+                    shutil.copyfileobj(source, target)
+                path.chmod(member.mode & 0o777)
     return revision, destination
 
 

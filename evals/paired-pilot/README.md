@@ -18,7 +18,7 @@ The baseline is a normally instructed Codex agent, not a bare language model. Bo
 
 ## Run
 
-Python 3.12+ (for the archive extraction filter), Git, and an authenticated Codex CLI supporting the chosen model are required. No Python packages are installed.
+Python 3.9+, Git, and an authenticated Codex CLI supporting the chosen model are required. No Python packages are installed.
 
 Check that each broken starter fails and each independent reference repair passes:
 
